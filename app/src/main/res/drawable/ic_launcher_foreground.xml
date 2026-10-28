@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- snare drum seen from the side, with two sticks -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp" android:height="108dp" android:viewportWidth="108" android:viewportHeight="108">
+    <path android:fillColor="#D9A441" android:pathData="M30,50 L78,50 L78,70 Q78,76 54,76 Q30,76 30,70 Z"/>
+    <path android:fillColor="#ECE8DF" android:pathData="M54,44 Q78,44 78,50 Q78,56 54,56 Q30,56 30,50 Q30,44 54,44 Z"/>
+    <path android:fillColor="#15171C" android:pathData="M36,58 L39,58 L39,73 L36,72 Z M47,59 L50,59 L50,75 L47,75 Z M58,59 L61,59 L61,75 L58,75 Z M69,58 L72,58 L72,72 L69,73 Z"/>
+    <path android:fillColor="#ECE8DF" android:pathData="M33,28 L36,26 L58,47 L56,49 Z M75,28 L72,26 L50,47 L52,49 Z"/>
+</vector>
