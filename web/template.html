@@ -144,7 +144,12 @@ footer{font-size:12px;color:var(--muted)}
 .mix-head button{background:var(--panel-2);border:1px solid var(--line);border-radius:3px;padding:5px 10px;font-size:13px}
 .strips{display:grid;grid-template-columns:repeat(8,minmax(40px,1fr));gap:4px;overflow-x:auto;padding-bottom:4px}
 .strip{display:flex;flex-direction:column;align-items:center;gap:6px;background:var(--panel-2);border-radius:3px;padding:8px 2px;min-width:0}
-.mh{display:flex;flex-direction:column;gap:2px}.mh small{font-size:12px;color:var(--muted)}
+.mh{display:flex;flex-direction:column;gap:2px}
+.mh h2{display:flex;align-items:center;gap:8px}
+.mix-head .info{width:20px;height:20px;border-radius:50%;border:1.5px solid var(--brass);background:transparent;color:var(--brass);font:700 12px/1 var(--body);padding:0;display:grid;place-items:center}
+.mix-head .info[aria-expanded="true"]{background:var(--brass);color:var(--brass-ink)}
+.hints{margin:0;padding:8px 10px 8px 26px;background:var(--panel-2);border:1px solid var(--line);border-radius:3px;font-size:12px;line-height:1.4;color:var(--muted);display:flex;flex-direction:column;gap:4px}
+.hints b{color:var(--fg)}.mh small{font-size:12px;color:var(--muted)}
 .strip.unused .fwrap,.strip.unused .nm,.strip.unused .lv{opacity:.35}
 .strip.mic .nm{font-size:9px;overflow-wrap:normal;letter-spacing:-.01em}
 .strip.mic{background:#232a33;box-shadow:inset 0 0 0 1px rgba(140,170,200,.25)}
@@ -255,13 +260,22 @@ input.fader{writing-mode:vertical-lr;direction:rtl;width:32px;height:170px;margi
   </div>
   <div class="mixer" id="mixer" role="dialog" aria-label="Миксер" hidden>
     <div class="mixer-in">
-      <div class="mix-head"><div class="mh"><h2>Миксер</h2><small id="mixKit"></small></div><div class="acts"><button id="mixReset">Сбросить</button><button id="mixClose">Готово</button></div></div>
-      <div class="knobrow"><button class="play" id="mixPlay" aria-label="Играть"><svg viewBox="0 0 24 24" id="mixPlayIcon"><path d="M8 5v14l11-7z"/></svg></button><div class="knob" id="roomKnob" role="slider" tabindex="0" aria-label="Комната" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50"><div class="knob-cap"><span class="knob-ind"></span></div></div><div class="kt"><b>Комната <output id="revOut">1,2 с</output></b><small>Размер помещения, громкость задаёт Ambience</small></div></div>
+      <div class="mix-head"><div class="mh"><h2>Миксер <button class="info" id="mixInfo" aria-label="Подсказки" aria-expanded="false" aria-controls="mixHints">!</button></h2><small id="mixKit"></small></div><div class="acts"><button id="mixReset">Сбросить</button><button id="mixClose">Готово</button></div></div>
+      <div class="knobrow"><button class="play" id="mixPlay" aria-label="Играть"><svg viewBox="0 0 24 24" id="mixPlayIcon"><path d="M8 5v14l11-7z"/></svg></button><div class="knob" id="roomKnob" role="slider" tabindex="0" aria-label="Комната" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50"><div class="knob-cap"><span class="knob-ind"></span></div></div><div class="kt"><b>Комната <output id="revOut">1,2 с</output></b></div></div>
+      <ul class="hints" id="mixHints" hidden>
+        <li><b>Комната</b>: размер помещения. Крутите ручку пальцем вверх или вниз, двойное нажатие возвращает значение пресета.</li>
+        <li><b>Ambience</b>: громкость отзвука комнаты. <b>Overhead</b>: микрофоны над установкой, вся установка сверху.</li>
+        <li><b>M</b> выключает канал, <b>S</b> оставляет его играть одного.</li>
+        <li>Двойное нажатие на фейдер возвращает его громкость по умолчанию.</li>
+        <li>Если фейдеры не помещаются, листайте их вбок. «Общий» всегда справа.</li>
+        <li id="hintIdle" hidden>Бледные фейдеры (<span id="hintIdleN">0</span>) не используются в текущей дорожке.</li>
+        <li>Настройки миксера запоминаются для каждого пресета отдельно.</li>
+      </ul>
       <div class="strips" id="strips"></div>
     </div>
   </div>
 
-  <footer>Играются ноты ударных по стандарту General MIDI (обычно 10-й канал). Сэмплы: FluidR3 GM, лицензия MIT. Работает без интернета. Версия 10.</footer>
+  <footer>Играются ноты ударных по стандарту General MIDI (обычно 10-й канал). Сэмплы: FluidR3 GM, лицензия MIT. Работает без интернета. Версия 11.</footer>
 </div>
 
 <script>
@@ -663,7 +677,8 @@ $('strips').addEventListener('dblclick',e=>{   // double-tap a fader to reset it
 });
 function mixTitle(){
   const st=$('strips'), idle=chans.filter(c=>usedCh.size && !usedCh.has(c.id)).length;
-  $('mixKit').textContent = kit.name+' · '+chans.length+' каналов'+(idle?' · без нот в дорожке: '+idle:'')+(st.offsetParent && st.scrollWidth>st.clientWidth+4?' · листайте →':'');
+  $('mixKit').textContent = kit.name+' · '+chans.length+' каналов';
+  $('hintIdle').hidden=!idle; $('hintIdleN').textContent=idle;
 }
 let openSheet=null;
 function sheet(id, open){
@@ -855,6 +870,7 @@ $('edSave').addEventListener('click',()=>{
 });
 $('edClose').addEventListener('click',closeEditor);
 $('edit').addEventListener('click',openEditor);
+$('mixInfo').addEventListener('click',()=>{ const h=$('mixHints'); h.hidden=!h.hidden; $('mixInfo').setAttribute('aria-expanded',!h.hidden); });
 $('mixPlay').addEventListener('click',()=> playing?pause():play());
 $('edPlay').addEventListener('click',()=> playing?pause():play());
 // standard MIDI file of the drum part: format 0, 480 ticks per beat, channel 10
