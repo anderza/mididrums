@@ -118,7 +118,7 @@ public class MainActivity extends Activity {
 
     /** Hides or shows the status and navigation bars (the track editor runs full screen). */
     @SuppressWarnings("deprecation")
-    private void setImmersive(boolean on) {
+    private void setFullScreen(boolean on) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             getWindow().setDecorFitsSystemWindows(!on);
             WindowInsetsController c = getWindow().getInsetsController();
@@ -141,7 +141,7 @@ public class MainActivity extends Activity {
     private class Bridge {
         @JavascriptInterface
         public void setImmersive(boolean on) {
-            runOnUiThread(() -> MainActivity.this.setImmersive(on));
+            runOnUiThread(() -> setFullScreen(on));
         }
 
         /** Writes a file the page built (base64) to the Downloads folder; true on success. */
