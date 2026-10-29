@@ -238,6 +238,7 @@ input.fader{writing-mode:vertical-lr;direction:rtl;width:32px;height:170px;margi
     </div>
     <div class="ed-tools">
       <button class="ctl sm" id="edPlay" aria-label="Играть"><svg viewBox="0 0 24 24" id="edPlayIcon"><path d="M8 5v14l11-7z"/></svg></button>
+      <button class="ctl sm" id="edStop" aria-label="Стоп"><svg viewBox="0 0 24 24"><path d="M7 7h10v10H7z"/></svg></button>
       <button class="ed-b" id="edUndo" disabled>Отменить</button>
       <label class="ed-f">Сетка <select id="edGrid"><option value="8">1/8</option><option value="16" selected>1/16</option><option value="32">1/32</option></select></label>
       <label class="ed-f">Сила <input id="edVel" type="range" min="20" max="127" value="100"><output id="edVelOut">100</output></label>
@@ -286,7 +287,7 @@ input.fader{writing-mode:vertical-lr;direction:rtl;width:32px;height:170px;margi
     </div>
   </div>
 
-  <footer>Играются ноты ударных по стандарту General MIDI (обычно 10-й канал). Сэмплы: FluidR3 GM, лицензия MIT. Работает без интернета. Версия 14.</footer>
+  <footer>Играются ноты ударных по стандарту General MIDI (обычно 10-й канал). Сэмплы: FluidR3 GM, лицензия MIT. Работает без интернета. Версия 15.</footer>
 </div>
 
 <script>
@@ -355,7 +356,7 @@ function parseMidi(buf){
   if (str(4)==='RIFF') { p=12; while(p<d.byteLength-8 && str(4)!=='data'){ p+=8+d.getUint32(p+4,true); } p+=8; }
   if (str(4)!=='MThd') throw new Error('Это не MIDI-файл');
   const hlen=d.getUint32(p+4); const ntracks=d.getUint16(p+10); const div=d.getUint16(p+12); p+=8+hlen;
-  const raw=[]; const tempos=[]; let title='';
+  const raw=[]; const tempos=[]; let title='', endTick=0;
   for(let t=0;t<ntracks && p<d.byteLength-8;t++){
     while(p<d.byteLength-8 && str(4)!=='MTrk'){ p+=8+d.getUint32(p+4); }
     const len=d.getUint32(p+4); p+=8; const end=Math.min(p+len,d.byteLength); let tick=0, rs=0;
@@ -366,7 +367,7 @@ function parseMidi(buf){
       if(st===0xFF){ const mt=d.getUint8(p++); const ml=vlq();
         if(mt===0x51 && ml===3) tempos.push({tick, us:(d.getUint8(p)<<16)|(d.getUint8(p+1)<<8)|d.getUint8(p+2)});
         if(mt===0x03 && !title && t<2){ title=new TextDecoder('utf-8').decode(new Uint8Array(buf,p,ml)).trim(); }
-        p+=ml; if(mt===0x2F) break;
+        p+=ml; if(mt===0x2F){ endTick=Math.max(endTick,tick); break; }
       } else if(st===0xF0||st===0xF7){ p+=vlq(); }
       else if(type===0x90){ const n=d.getUint8(p), v=d.getUint8(p+1); p+=2; if(v>0) raw.push({tick,ch,n,v}); }
       else if(type===0xC0||type===0xD0){ p+=1; }
@@ -385,7 +386,7 @@ function parseMidi(buf){
   }
   const events=raw.map(e=>({t:toSec(e.tick),ch:e.ch,n:e.n,v:e.v})).sort((a,b)=>a.t-b.t);
   const bpm = tempos.length ? Math.round(60e6/tempos[0].us) : 120;
-  return {events, title, bpm};
+  return {events, title, bpm, end:toSec(endTick)};
 }
 
 /* ---------- demo groove (so the player works before a file is added) ---------- */
@@ -400,9 +401,8 @@ function demoTrack(){
     if(bar===3) add(t0+15*s,38,60);
     if(bar===7){ [[8,50],[9,50],[10,48],[11,48],[12,45],[13,45],[14,41],[15,41]].forEach(([k,n],i)=>add(t0+k*s,n,96+i*3)); }
   }
-  add(8*4*b,49,124); add(8*4*b,36,124);
   ev.forEach(e=>e.raw=e.n); ev.sort((a,b)=>a.t-b.t);
-  return {name:'Пример: рок-бит 104 BPM', events:ev, bpm, demo:true};
+  return {name:'Пример: рок-бит 104 BPM', events:ev, bpm, demo:true, bars:8};
 }
 
 /* ---------- built-in example grooves (written for this app) ----------
@@ -464,9 +464,8 @@ function makeExample(def){
     if(b%4===3 && def.g===16 && def.v.k[14]==='-') ev.push({t:+(b*bar+14*step).toFixed(5), ch:9, n:36, v:96});  // pickup kick into the next phrase
   }
   const fills=FILLS[def.g]; put(fills[(def.fill||0)%fills.length],7);
-  ev.push({t:+(8*bar).toFixed(5), ch:9, n:49, v:124}, {t:+(8*bar).toFixed(5), ch:9, n:36, v:124});
   ev.forEach(e=>e.raw=e.n); ev.sort((a,b)=>a.t-b.t);
-  return {name:STYLE_NAME[def.st]+': '+def.n.toLowerCase()+' '+def.bpm+' BPM', events:ev, bpm:def.bpm, demo:true, style:def.st, def, chan:9, bars:9};
+  return {name:STYLE_NAME[def.st]+': '+def.n.toLowerCase()+' '+def.bpm+' BPM', events:ev, bpm:def.bpm, demo:true, style:def.st, def, chan:9, bars:8};
 }
 
 /* ---------- audio ---------- */
@@ -561,31 +560,41 @@ const track = () => tracks[cur];
 const evs = () => track().events.filter(e=>e.ch===chan);   // n<0 = no sound for this key
 let list=[];
 function duration(){ const t=track(), e=t.events, end=e.length ? e[e.length-1].t : 0;
-  return t.bars ? Math.max(t.bars*240/t.bpm, end+0.3) : (e.length ? end+1.2 : 0); }   // edited tracks end on their last bar so loops stay in time
-function pos(){ return playing ? startPos+(ctx.currentTime-startCtx)*speed : startPos; }
+  if(t.bars) return Math.max(t.bars*240/t.bpm, end+0.01);   // edited tracks end on their last bar so loops stay in time
+  if(!e.length) return 0;
+  const bar=240/(t.bpm||120), L=Math.max(end+0.05, t.end||0), last=Math.round(end/bar)*bar;
+  // looping a song that closes on a single downbeat hit: the next pass starts on that beat instead of after a silent bar
+  if(loop && end>0 && Math.abs(end-last)<0.03) return last;
+  return Math.ceil(L/bar-0.02)*bar; }   // files end on a whole bar too, so a loop comes back in without a gap
+let wrapLen=0;   // length of the pass that is still sounding right after a loop restart
+function pos(){ if(!playing) return startPos; const p=startPos+(ctx.currentTime-startCtx)*speed; return p<0 ? (wrapLen ? p+wrapLen : 0) : p; }
 function findIdx(t){ let lo=0,hi=list.length; while(lo<hi){ const m=(lo+hi)>>1; if(list[m].t<t) lo=m+1; else hi=m; } return lo; }
 function tick(){
-  const now=ctx.currentTime, horizon=startPos+(now+0.15-startCtx)*speed;
-  while(idx<list.length && list[idx].t<=horizon){
-    const e=list[idx++]; const when=Math.max(now, startCtx+(e.t-startPos)/speed);
-    if(e.cut) hit(42, Math.round(e.v*0.7), when);
-    if(hit(e.n,e.v,when,e.cut)) flashes.push({when,g:noteGroup(e.n),n:e.n});
+  const now=ctx.currentTime, D=duration();
+  for(let pass=0; pass<4; pass++){
+    const horizon=startPos+(now+0.15-startCtx)*speed;
+    while(idx<list.length && list[idx].t<=horizon && list[idx].t<D){
+      const e=list[idx++]; const when=Math.max(now, startCtx+(e.t-startPos)/speed);
+      if(e.cut) hit(42, Math.round(e.v*0.7), when);
+      if(hit(e.n,e.v,when,e.cut)) flashes.push({when,g:noteGroup(e.n),n:e.n});
+    }
+    if(horizon<D || !loop || D<=0) break;
+    // loop: the next pass starts exactly where this one ends, scheduled ahead like any other note
+    startCtx += (D-startPos)/speed; startPos=0; idx=0; wrapLen=D;
   }
-  if(pos()>=duration()){
-    if(loop){ startPos=0; startCtx=now; idx=0; } else { stop(); }
-  }
+  if(!loop && pos()>=D) stop();
 }
 async function play(){
   initAudio(); if(ctx.state!=='running') await ctx.resume();
   if(!list.length){ showNote('В этой дорожке нет нот на выбранном канале. Выберите другой канал ударных.'); return; }
   if(startPos>=duration()) startPos=0;
-  startCtx=ctx.currentTime+0.05; idx=findIdx(startPos); playing=true;
+  startCtx=ctx.currentTime+0.05; idx=findIdx(startPos); wrapLen=0; playing=true;
   timer=setInterval(tick,25); tick(); setPlayIcon();
 }
 function pause(){ if(!playing) return; startPos=pos(); playing=false; clearInterval(timer); setPlayIcon(); }
 function stop(){ pause(); startPos=0; idx=0; render(); }
 function seekTo(t){ const was=playing; if(was) pause(); startPos=Math.max(0,Math.min(t,duration())); idx=findIdx(startPos); if(was) play(); render(); }
-function setSpeed(s){ if(playing){ startPos=pos(); startCtx=ctx.currentTime; } speed=s; }
+function setSpeed(s){ if(playing){ startPos=pos(); startCtx=ctx.currentTime; idx=findIdx(startPos); wrapLen=0; } speed=s; }
 
 /* ---------- UI ---------- */
 function setStatus(t){ $('status').textContent=t; }
@@ -687,7 +696,7 @@ $('newTrack').addEventListener('click',()=>{
 $('file').addEventListener('change', async e=>{
   let last=-1, bad=[];
   for(const f of e.target.files){
-    try{ const m=parseMidi(await f.arrayBuffer()); tracks.push({saved:true, name:f.name.replace(/\.(mid|midi|kar|rmi)$/i,''), title:m.title, events:m.events.map(e=>({...e, raw:e.n, n:gmNote(e.n), cut:HAT_OPEN[e.n]})), bpm:m.bpm}); last=tracks.length-1; }
+    try{ const m=parseMidi(await f.arrayBuffer()); tracks.push({saved:true, name:f.name.replace(/\.(mid|midi|kar|rmi)$/i,''), title:m.title, events:m.events.map(e=>({...e, raw:e.n, n:gmNote(e.n), cut:HAT_OPEN[e.n]})), bpm:m.bpm, end:m.end}); last=tracks.length-1; }
     catch(err){ bad.push(f.name); }
   }
   e.target.value=''; saveLibrary();
@@ -873,7 +882,7 @@ function edDraw(){
   // playhead
   const px=pos()/st*ed.cell-x0; if(px>=0&&px<=w){ c.fillStyle=col('--hit'); c.fillRect(px-1,0,2,h); }
 }
-function edCommit(){ const t=track(); ed.sel.forEach(e=>{ if(!t.events.includes(e)) ed.sel.delete(e); }); edSelUI(); t.dirty=true; t.bars=ed.bars; t.events.sort((a,b)=>a.t-b.t); list=evs(); if(playing) idx=findIdx(pos()); fitToKit(); edSaved(false); edDraw(); }
+function edCommit(){ const t=track(); ed.sel.forEach(e=>{ if(!t.events.includes(e)) ed.sel.delete(e); }); edSelUI(); t.dirty=true; t.bars=ed.bars; t.events.sort((a,b)=>a.t-b.t); list=evs(); if(playing) idx=findIdx(Math.max(0, startPos+(ctx.currentTime+0.15-startCtx)*speed)); fitToKit(); edSaved(false); edDraw(); }
 function edPush(){ ed.undo.push(JSON.stringify(track().events)); if(ed.undo.length>50) ed.undo.shift(); $('edUndo').disabled=false; }
 $('edScroll').addEventListener('scroll',()=>{ $('edLanes').scrollTop=$('edScroll').scrollTop; edDraw(); },{passive:true});
 window.addEventListener('resize',()=>edDraw());
@@ -991,6 +1000,8 @@ $('edit').addEventListener('click',openEditor);
 $('mixInfo').addEventListener('click',()=>{ const h=$('mixHints'); h.hidden=!h.hidden; $('mixInfo').setAttribute('aria-expanded',!h.hidden); });
 $('mixPlay').addEventListener('click',()=> playing?pause():play());
 $('edPlay').addEventListener('click',()=> playing?pause():play());
+// first press stops where it is, a second press goes back to the start
+$('edStop').addEventListener('click',()=>{ if(playing) pause(); else { stop(); $('edScroll').scrollLeft=0; } edDraw(); });
 // standard MIDI file of the drum part: format 0, 480 ticks per beat, channel 10
 function toMidi(t){
   const ppq=480, sp=t.bpm/60*ppq, out=[];
