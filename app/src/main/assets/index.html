@@ -34,14 +34,15 @@ button{cursor:pointer}
 .kitbtn .kl{font-family:var(--display);font-weight:500;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
 .kitbtn .kn{flex:1;min-width:0;font-family:var(--display);font-weight:600;font-size:17px;letter-spacing:.03em;text-transform:uppercase;color:var(--brass);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .kitbtn svg{width:26px;height:26px;fill:var(--fg);flex:none}
-.knobrow{display:flex;align-items:center;gap:14px;background:var(--panel-2);border-radius:3px;padding:10px 14px}
-.knob{width:62px;height:62px;border-radius:50%;flex:none;touch-action:none;cursor:ns-resize;background:conic-gradient(from 225deg,var(--brass) 0 calc(var(--a,.5)*270deg),var(--line) 0 270deg,transparent 0);display:grid;place-items:center}
-.knob-cap{width:48px;height:48px;border-radius:50%;background:radial-gradient(circle at 40% 35%,#4a4f5c,#22252c 70%);box-shadow:0 2px 6px rgba(0,0,0,.5);position:relative;transform:rotate(calc(-135deg + var(--a,.5)*270deg))}
-.knob-ind{position:absolute;left:50%;top:5px;width:3px;height:12px;margin-left:-1.5px;border-radius:2px;background:var(--hit)}
-.knobrow .kt{display:flex;flex-direction:column;gap:2px;min-width:0}
+.knobrow{display:flex;align-items:center;gap:10px;background:var(--panel-2);border-radius:3px;padding:4px 8px}
+.knobrow .play{width:34px;height:34px}.knobrow .play svg{width:18px;height:18px}
+.knob{width:40px;height:40px;border-radius:50%;flex:none;touch-action:none;cursor:ns-resize;background:conic-gradient(from 225deg,var(--brass) 0 calc(var(--a,.5)*270deg),var(--line) 0 270deg,transparent 0);display:grid;place-items:center}
+.knob-cap{width:30px;height:30px;border-radius:50%;background:radial-gradient(circle at 40% 35%,#4a4f5c,#22252c 70%);box-shadow:0 2px 6px rgba(0,0,0,.5);position:relative;transform:rotate(calc(-135deg + var(--a,.5)*270deg))}
+.knob-ind{position:absolute;left:50%;top:3px;width:2px;height:8px;margin-left:-1.5px;border-radius:2px;background:var(--hit)}
+.knobrow .kt{display:flex;flex-direction:column;gap:0;min-width:0;line-height:1.25}
 .knobrow .kt b{font-size:14px}
 .knobrow .kt output{font-variant-numeric:tabular-nums;color:var(--brass);font-weight:700}
-.knobrow .kt small{color:var(--muted);font-size:12px}
+.knobrow .kt small{color:var(--muted);font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .kits{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
 .kit{background:var(--panel);border:1px solid var(--line);border-radius:3px;padding:8px 10px;text-align:left;display:flex;flex-direction:column;gap:3px;min-width:0}
 .kit b{font-family:var(--display);font-weight:600;font-size:16px;letter-spacing:.03em;text-transform:uppercase}
@@ -261,12 +262,12 @@ input.fader{writing-mode:vertical-lr;direction:rtl;width:32px;height:170px;margi
   <div class="mixer" id="mixer" role="dialog" aria-label="Миксер" hidden>
     <div class="mixer-in">
       <div class="mix-head"><div class="mh"><h2>Миксер</h2><small id="mixKit"></small></div><div class="acts"><button id="mixReset">Сбросить</button><button id="mixClose">Готово</button></div></div>
-      <div class="knobrow"><div class="knob" id="roomKnob" role="slider" tabindex="0" aria-label="Комната" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50"><div class="knob-cap"><span class="knob-ind"></span></div></div><div class="kt"><b>Комната <output id="revOut">1,2 с</output></b><small>Размер помещения. Громкость его отзвука задаёт фейдер Ambience.</small></div></div>
+      <div class="knobrow"><button class="play" id="mixPlay" aria-label="Играть"><svg viewBox="0 0 24 24" id="mixPlayIcon"><path d="M8 5v14l11-7z"/></svg></button><div class="knob" id="roomKnob" role="slider" tabindex="0" aria-label="Комната" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50"><div class="knob-cap"><span class="knob-ind"></span></div></div><div class="kt"><b>Комната <output id="revOut">1,2 с</output></b><small>Размер помещения, громкость задаёт Ambience</small></div></div>
       <div class="strips" id="strips"></div>
     </div>
   </div>
 
-  <footer>Играются ноты ударных по стандарту General MIDI (обычно 10-й канал). Сэмплы: FluidR3 GM, лицензия MIT. Работает без интернета. Версия 9.</footer>
+  <footer>Играются ноты ударных по стандарту General MIDI (обычно 10-й канал). Сэмплы: FluidR3 GM, лицензия MIT. Работает без интернета. Версия 10.</footer>
 </div>
 
 <script>
@@ -495,7 +496,7 @@ function setSpeed(s){ if(playing){ startPos=pos(); startCtx=ctx.currentTime; } s
 function setStatus(t){ $('status').textContent=t; }
 function showNote(t){ $('note').textContent=t; $('note').hidden=!t; }
 const fmt = s => { s=Math.max(0,Math.floor(s)); return Math.floor(s/60)+':'+String(s%60).padStart(2,'0'); };
-function setPlayIcon(){ $('edPlayIcon').innerHTML = playing ? '<path d="M7 5h4v14H7zM13 5h4v14h-4z"/>' : '<path d="M8 5v14l11-7z"/>'; $('playIcon').innerHTML = playing ? '<path d="M7 5h4v14H7zM13 5h4v14h-4z"/>' : '<path d="M8 5v14l11-7z"/>'; $('play').setAttribute('aria-label', playing?'Пауза':'Играть'); }
+function setPlayIcon(){ $('edPlayIcon').innerHTML = $('mixPlayIcon').innerHTML = playing ? '<path d="M7 5h4v14H7zM13 5h4v14h-4z"/>' : '<path d="M8 5v14l11-7z"/>'; $('mixPlay').setAttribute('aria-label', playing?'Пауза':'Играть'); $('playIcon').innerHTML = playing ? '<path d="M7 5h4v14H7zM13 5h4v14h-4z"/>' : '<path d="M8 5v14l11-7z"/>'; $('play').setAttribute('aria-label', playing?'Пауза':'Играть'); }
 
 function renderKits(){
   $('kitName').textContent = kit.name;
@@ -860,6 +861,7 @@ $('edSave').addEventListener('click',()=>{
 });
 $('edClose').addEventListener('click',closeEditor);
 $('edit').addEventListener('click',openEditor);
+$('mixPlay').addEventListener('click',()=> playing?pause():play());
 $('edPlay').addEventListener('click',()=> playing?pause():play());
 // standard MIDI file of the drum part: format 0, 480 ticks per beat, channel 10
 function toMidi(t){
