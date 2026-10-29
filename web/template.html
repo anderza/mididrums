@@ -278,19 +278,19 @@ input.fader{writing-mode:vertical-lr;direction:rtl;width:32px;height:170px;margi
     </div>
   </div>
 
-  <footer>Играются ноты ударных по стандарту General MIDI (обычно 10-й канал). Сэмплы: FluidR3 GM, лицензия MIT. Работает без интернета. Версия 16.</footer>
+  <footer>Играются ноты ударных по стандарту General MIDI (обычно 10-й канал). Сэмплы: FluidR3 GM, лицензия MIT. Работает без интернета. Версия 17.</footer>
 </div>
 
 <script>
 const KITDATA = /*__KITDATA__*/;
 
 const KITS = [
-  {id:'std',    name:'Стандарт',   desc:'Базовая установка General MIDI, почти без обработки', v:'0', fx:{low:0, mid:0, high:0, rev:0.12, revLen:1.2, thr:-6, ratio:1.2}},
-  {id:'rock',   name:'Рок',        desc:'Мощная бочка, звонкий малый, живая комната', v:'16', fx:{low:4, mid:-1, high:2, rev:0.14, revLen:1.3, thr:-18, ratio:3, gain:3}, faders:{verb:45}},
-  {id:'punk',   name:'Панк-рок',   desc:'Басовый и плотный, мягкий верх, без комнаты', v:'0', fx:{low:6, mid:-1, high:-1, rev:0.2, revLen:0.6, thr:-20, ratio:2.5, att:0.012, gain:4}, faders:{amb:0, verb:40}},
-  {id:'modern', name:'Модерн',     desc:'Плотный компрессированный звук, щелчок бочки', v:'11', fx:{low:5, mid:-4, high:5, rev:0.05, revLen:0.7, thr:-28, ratio:8, gain:6}, faders:{verb:20}},
-  {id:'pop',    name:'Поп',        desc:'Чистая студийная установка, мягкий ревер',     v:'0',  fx:{low:1, mid:0,  high:3, rev:0.22, revLen:1.4, thr:-20, ratio:2.5}, faders:{verb:85}},
-  {id:'electro',name:'Электро 808',desc:'Драм-машина: гулкая бочка и сухой малый',      v:'21', fx:{low:3, mid:-1, high:1, rev:0.12, revLen:1.0, thr:-20, ratio:3}},
+  {id:'std',    name:'Стандарт',   desc:'Базовая установка General MIDI, почти без обработки', v:'0', fx:{low:0, mid:0, high:0, rev:0.12, revLen:1.2, thr:-6, ratio:1.2, sat:0.6, gain:2}},
+  {id:'rock',   name:'Рок',        desc:'Мощная бочка, звонкий малый, живая комната', v:'16', fx:{low:4, mid:-1, high:2, rev:0.14, revLen:1.3, thr:-18, ratio:3, gain:4, sat:1.3}, faders:{verb:45}},
+  {id:'punk',   name:'Панк-рок',   desc:'Басовый и плотный, мягкий верх, без комнаты', v:'0', fx:{low:6, mid:-1, high:-1, rev:0.2, revLen:0.6, thr:-20, ratio:2.5, att:0.012, gain:5, sat:1.5}, faders:{amb:0, verb:40}},
+  {id:'modern', name:'Модерн',     desc:'Плотный компрессированный звук, щелчок бочки', v:'11', fx:{low:5, mid:-4, high:5, rev:0.05, revLen:0.7, thr:-28, ratio:8, gain:7, sat:1.2}, faders:{verb:20}},
+  {id:'pop',    name:'Поп',        desc:'Чистая студийная установка, мягкий ревер',     v:'0',  fx:{low:1, mid:0,  high:3, rev:0.22, revLen:1.4, thr:-20, ratio:2.5, gain:2}, faders:{verb:85}},
+  {id:'electro',name:'Электро 808',desc:'Драм-машина: гулкая бочка и сухой малый',      v:'21', fx:{low:3, mid:-1, high:1, rev:0.12, revLen:1.0, thr:-20, ratio:3, gain:2}},
 ];
 
 const GROUPS = [
@@ -462,17 +462,30 @@ function makeExample(def){
 let chans=[], buses={}, noteChan={};   // current kit's channel list, id -> close bus, note -> channel id
 let mixAll = (()=>{ try{ return JSON.parse(store.get('mix5'))||{}; }catch(e){ return {}; } })();
 let mix;   // settings of the current kit: {lv:{id:%}, mute:{id:bool}, solo:{id:bool}}
-let makeup, limiter, ctx=null, master, comp, eqLow, eqMid, eqHigh, conv, restBus, ohIn, ohHp, ohOut, ambIn, ambOut;
+let sat, makeup, limiter, ctx=null, master, comp, eqLow, eqMid, eqHigh, conv, restBus, ohIn, ohHp, ohOut, ambIn, ambOut;
 const decoded = {};              // sample hash -> AudioBuffer
 let kit = KITS.find(k=>k.id===store.get('kit')) || KITS[0];   // KITS[0] is the default kit
 let roomSize = kit.fx.revLen;   // seconds of reverb tail
 
 function b64ToBuf(b64){ const bin=atob(b64); const u=new Uint8Array(bin.length); for(let i=0;i<bin.length;i++) u[i]=bin.charCodeAt(i); return u.buffer; }
 function impulse(sec){
-  const len=Math.floor(ctx.sampleRate*sec), ir=ctx.createBuffer(2,len,ctx.sampleRate);
-  for(let c=0;c<2;c++){ const d=ir.getChannelData(c); for(let i=0;i<len;i++){ d[i]=(Math.random()*2-1)*Math.pow(1-i/len,3.2)*(i<ctx.sampleRate*0.012?0.3:1); } }
+  const sr=ctx.sampleRate, len=Math.floor(sr*sec), ir=ctx.createBuffer(2,len,sr), pre=Math.floor(sr*0.008);
+  for(let c=0;c<2;c++){
+    const d=ir.getChannelData(c); let y=0;
+    for(let i=pre;i<len;i++){
+      const k=(i-pre)/(len-pre), damp=0.15+0.8*k;   // walls soak up the top end first
+      y+=(1-damp)*((Math.random()*2-1)-y);
+      d[i]=y*Math.pow(1-k,3.2)*(1.2+k)*(k<0.02?0.35:1);
+    }
+    for(let r=0;r<9;r++){ const at=pre+Math.floor(sr*(0.004+Math.random()*0.04)); if(at<len) d[at]+=(Math.random()<0.5?-1:1)*(0.9-r*0.08); }   // early reflections, different on each side
+  }
   return ir;
 }
+// where each drum sits, heard from the drummer's seat (-1 left, 1 right)
+const PAN={35:0,36:0,38:-0.12,37:-0.12,40:-0.12,39:-0.1, 42:-0.38,44:-0.38,46:-0.38, 50:-0.22,48:-0.1,47:0.04,45:0.14,43:0.32,41:0.42,
+  49:-0.45,57:0.5,55:-0.3,52:0.6,51:0.42,53:0.38,59:0.48, 54:0.25,56:0.2,58:0.3};
+// soft saturation curve for the drum bus, like a console or tape pushed a little
+function satCurve(k){ const n=2048, c=new Float32Array(n); for(let i=0;i<n;i++){ const x=i/(n-1)*2-1; c[i]=k>0?Math.tanh(k*x)/k:x; } return c; }
 function initAudio(){
   if(ctx) return;
   ctx = new (window.AudioContext||window.webkitAudioContext)({latencyHint:'interactive'});
@@ -483,7 +496,8 @@ function initAudio(){
   master=ctx.createGain(); master.gain.value=$('vol').value/100;
   makeup=ctx.createGain(); limiter=ctx.createDynamicsCompressor();
   limiter.threshold.value=-2; limiter.knee.value=0; limiter.ratio.value=20; limiter.attack.value=0.002; limiter.release.value=0.08;
-  eqLow.connect(eqMid).connect(eqHigh).connect(comp).connect(makeup).connect(master);
+  sat=ctx.createWaveShaper(); sat.oversample='2x';
+  eqLow.connect(eqMid).connect(eqHigh).connect(sat).connect(comp).connect(makeup).connect(master);
   restBus=ctx.createGain(); restBus.connect(eqLow);
   // overheads: the whole kit from above, thin on low end
   ohIn=ctx.createGain(); ohHp=ctx.createBiquadFilter(); ohHp.type='highpass'; ohHp.frequency.value=320; ohOut=ctx.createGain();
@@ -504,6 +518,7 @@ function applyFx(){
   eqLow.gain.value=f.low; eqMid.gain.value=f.mid; eqHigh.gain.value=f.high;
   comp.threshold.value=f.thr; comp.ratio.value=f.ratio; comp.attack.value=f.att||0.006;
   makeup.gain.value=Math.pow(10,(f.gain||0)/20);   // brings compressed presets back up to the others' loudness
+  sat.curve=satCurve(f.sat||0.8);
   conv.buffer=impulse(roomSize);
 }
 // Room knob below the kit's own setting dries everything out: at its lowest there is no room at all
@@ -533,9 +548,14 @@ function hit(n,vel,when,cut){
   const z=zoneFor(n); if(!z) return false; const buf=decoded[z[0]]; if(!buf) return false;
   const [,orig,coarse,fine,anchor]=z;
   const src=ctx.createBufferSource(); src.buffer=buf;
-  src.playbackRate.value=Math.pow(2,(n*100-(orig-coarse*100-fine))/1200);
-  const g=ctx.createGain(); const v=vel/127; g.gain.value=v*v*0.95+0.05*v;
-  src.connect(g); g.connect(buses[noteChan[n]]||restBus); g.connect(ohIn); g.connect(ambIn);
+  // no two hits alike: a few cents of pitch and a little level drift, like alternating samples
+  src.playbackRate.value=Math.pow(2,(n*100-(orig-coarse*100-fine)+(Math.random()-0.5)*14)/1200);
+  const g=ctx.createGain(); const v=vel/127; g.gain.value=(v*v*0.95+0.05*v)*(0.95+Math.random()*0.1);
+  // a soft hit is darker than a hard one
+  const tone=ctx.createBiquadFilter(); tone.type='lowpass'; tone.Q.value=0.5; tone.frequency.value=Math.min(20000, 1600*Math.pow(2,v*3.6));
+  const pan=ctx.createStereoPanner(); pan.pan.value=PAN[n]||0;
+  src.connect(tone).connect(g).connect(pan);
+  pan.connect(buses[noteChan[n]]||restBus); pan.connect(ohIn); pan.connect(ambIn);
   if(n===42||n===44||n===46){ if(openHat && openHat.t<when){ openHat.g.gain.setTargetAtTime(0,when,0.02); } openHat=null; }   // a new hat hit cuts the ringing open hat
   if(n===46) openHat={g,t:when};
   if(cut){ g.gain.setTargetAtTime(0, when+cut, cut*0.35); }
