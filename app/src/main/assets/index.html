@@ -43,12 +43,9 @@ button{cursor:pointer}
 .knobrow .kt b{font-size:14px}
 .knobrow .kt output{font-variant-numeric:tabular-nums;color:var(--brass);font-weight:700}
 .knobrow .kt small{color:var(--muted);font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.kits{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
-.kit{background:var(--panel);border:1px solid var(--line);border-radius:3px;padding:8px 10px;text-align:left;display:flex;flex-direction:column;gap:3px;min-width:0}
-.kit b{font-family:var(--display);font-weight:600;font-size:16px;letter-spacing:.03em;text-transform:uppercase}
-.kit small{color:var(--muted);font-size:12.5px;line-height:1.35}
-.kit[aria-pressed="true"]{border-color:var(--brass);background:var(--panel-2);box-shadow:inset 0 0 0 1px var(--brass)}
-.kit[aria-pressed="true"] b{color:var(--brass)}
+.kits{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.kit{background:var(--panel);border:1px solid var(--line);border-radius:3px;padding:7px 4px;min-width:0;font-family:var(--display);font-weight:600;font-size:13px;letter-spacing:.04em;text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--muted)}
+.kit[aria-pressed="true"]{border-color:var(--brass);background:var(--panel-2);box-shadow:inset 0 0 0 1px var(--brass);color:var(--brass)}
 
 /* pads */
 .pads{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
@@ -191,7 +188,7 @@ input.fader{writing-mode:vertical-lr;direction:rtl;width:32px;height:170px;margi
   </header>
 
   <section>
-    <button class="kitbtn" id="kitOpen" aria-haspopup="dialog"><span class="kl">Установка</span><span class="kn" id="kitName">—</span><svg viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg></button>
+    <div class="kits" id="kits" role="group" aria-label="Установка"></div>
   </section>
 
   <section>
@@ -254,7 +251,7 @@ input.fader{writing-mode:vertical-lr;direction:rtl;width:32px;height:170px;margi
       <button class="ed-b" id="edExport">Скачать MIDI</button>
       <button class="ed-b danger" id="edClear">Очистить</button>
     </div>
-    <div class="ed-hint" id="edHint">Нажмите на клетку, чтобы поставить удар, нажмите на удар, чтобы убрать. Нажатие на название инструмента даёт его послушать, удержание выделяет все его ноты. Сведите или разведите два пальца, чтобы изменить масштаб сетки.</div>
+    <div class="ed-hint" id="edHint">Нажмите на клетку, чтобы поставить удар, нажмите на удар, чтобы убрать. Нажатие на название инструмента даёт его послушать, удержание выделяет все его ноты, выделенные ноты можно перетащить на другой инструмент. Сведите или разведите два пальца, чтобы изменить масштаб сетки.</div>
     <div class="ed-sel" id="edSelBar" hidden>
       <span>Выбрано: <b id="edSelInfo">0</b></span>
       <label class="ed-f">Сила <input id="edSelVel" type="range" min="1" max="127" value="100"><output id="edSelVelOut">100</output></label>
@@ -269,18 +266,12 @@ input.fader{writing-mode:vertical-lr;direction:rtl;width:32px;height:170px;margi
       <div class="ed-scroll" id="edScroll"><div id="edSpacer"></div><canvas id="edCanvas"></canvas></div>
     </div>
   </div>
-  <div class="mixer" id="kitSheet" role="dialog" aria-label="Установка" hidden>
-    <div class="mixer-in">
-      <div class="mix-head"><h2>Установка</h2><div class="acts"><button id="kitClose">Готово</button></div></div>
-      <div class="kits" id="kits"></div>
-    </div>
-  </div>
   <div class="mixer" id="mixer" role="dialog" aria-label="Миксер" hidden>
     <div class="mixer-in">
       <div class="mix-head"><div class="mh"><h2>Миксер <button class="info" id="mixInfo" aria-label="Подсказки" aria-expanded="false" aria-controls="mixHints">!</button></h2><small id="mixKit"></small></div><div class="acts"><button id="mixReset">Сбросить</button><button id="mixClose">Готово</button></div></div>
       <div class="knobrow"><button class="play" id="mixPlay" aria-label="Играть"><svg viewBox="0 0 24 24" id="mixPlayIcon"><path d="M8 5v14l11-7z"/></svg></button><div class="knob" id="roomKnob" role="slider" tabindex="0" aria-label="Комната" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50"><div class="knob-cap"><span class="knob-ind"></span></div></div><div class="kt"><b>Комната <output id="revOut">1,2 с</output></b></div></div>
       <ul class="hints" id="mixHints" hidden>
-        <li><b>Комната</b>: размер помещения. Крутите ручку пальцем вверх или вниз, двойное нажатие возвращает значение пресета.</li>
+        <li><b>Комната</b>: размер помещения. Вправо от значения пресета комната больше, влево пространство уходит, в крайнем левом положении звук совсем сухой. Крутите ручку пальцем вверх или вниз, двойное нажатие возвращает значение пресета.</li>
         <li><b>Реверб</b>: длина хвоста бочки, малого и томов. Ниже 100% хвост укорачивается, на 0% звук совсем сухой.</li>
         <li><b>Ambience</b>: громкость отзвука комнаты. <b>Overhead</b>: микрофоны над установкой, вся установка сверху.</li>
         <li><b>M</b> выключает канал, <b>S</b> оставляет его играть одного.</li>
@@ -293,7 +284,7 @@ input.fader{writing-mode:vertical-lr;direction:rtl;width:32px;height:170px;margi
     </div>
   </div>
 
-  <footer>Играются ноты ударных по стандарту General MIDI (обычно 10-й канал). Сэмплы: FluidR3 GM, лицензия MIT. Работает без интернета. Версия 15.</footer>
+  <footer>Играются ноты ударных по стандарту General MIDI (обычно 10-й канал). Сэмплы: FluidR3 GM, лицензия MIT. Работает без интернета. Версия 16.</footer>
 </div>
 
 <script>
@@ -302,7 +293,7 @@ const KITDATA = {"s":{"a8f0958a":"SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjU3LjcyLjEwMQ
 const KITS = [
   {id:'std',    name:'Стандарт',   desc:'Базовая установка General MIDI, почти без обработки', v:'0', fx:{low:0, mid:0, high:0, rev:0.12, revLen:1.2, thr:-6, ratio:1.2}},
   {id:'rock',   name:'Рок',        desc:'Мощная бочка, звонкий малый, живая комната', v:'16', fx:{low:4, mid:-1, high:2, rev:0.14, revLen:1.3, thr:-18, ratio:3, gain:3}, faders:{verb:45}},
-  {id:'punk',   name:'Панк-рок',   desc:'Басовый и плотный, мягкий верх, без комнаты', v:'0', over:{37:'11',38:'11',40:'11'}, fx:{low:7, mid:-2, high:-2, rev:0.2, revLen:0.6, thr:-28, ratio:6, gain:5}, faders:{amb:0, verb:40}},
+  {id:'punk',   name:'Панк-рок',   desc:'Басовый и плотный, мягкий верх, без комнаты', v:'0', fx:{low:6, mid:-1, high:-1, rev:0.2, revLen:0.6, thr:-20, ratio:2.5, att:0.012, gain:4}, faders:{amb:0, verb:40}},
   {id:'modern', name:'Модерн',     desc:'Плотный компрессированный звук, щелчок бочки', v:'11', fx:{low:5, mid:-4, high:5, rev:0.05, revLen:0.7, thr:-28, ratio:8, gain:6}, faders:{verb:20}},
   {id:'pop',    name:'Поп',        desc:'Чистая студийная установка, мягкий ревер',     v:'0',  fx:{low:1, mid:0,  high:3, rev:0.22, revLen:1.4, thr:-20, ratio:2.5}, faders:{verb:85}},
   {id:'electro',name:'Электро 808',desc:'Драм-машина: гулкая бочка и сухой малый',      v:'21', fx:{low:3, mid:-1, high:1, rev:0.12, revLen:1.0, thr:-20, ratio:3}},
@@ -416,7 +407,6 @@ function demoTrack(){
    g is steps per bar: 16 = sixteenths, 12 = eighth-note triplets. Each example is 8 bars:
    the groove, a fill in bar 8, then a closing crash. */
 const LANE_KEY = {k:36, s:38, h:42, o:46, p:44, r:51, b:53, c:49, d:57, n:52, t:48, m:45, f:43, g:41};
-const STYLE_KIT = {metal:'modern', rock:'rock', punk:'punk'};
 const STYLE_NAME = {metal:'Метал', rock:'Рок', punk:'Панк-рок'};
 const FILLS = {
   16: [
@@ -518,15 +508,17 @@ function buildBuses(){
 function applyFx(){
   if(!ctx) return; const f=kit.fx;
   eqLow.gain.value=f.low; eqMid.gain.value=f.mid; eqHigh.gain.value=f.high;
-  comp.threshold.value=f.thr; comp.ratio.value=f.ratio;
+  comp.threshold.value=f.thr; comp.ratio.value=f.ratio; comp.attack.value=f.att||0.006;
   makeup.gain.value=Math.pow(10,(f.gain||0)/20);   // brings compressed presets back up to the others' loudness
   conv.buffer=impulse(roomSize);
 }
+// Room knob below the kit's own setting dries everything out: at its lowest there is no room at all
+function roomScale(){ return Math.max(0, Math.min(1, (roomSize-ROOM_MIN)/Math.max(0.05, kit.fx.revLen-ROOM_MIN))); }
 // The samples carry their own room sound in the tail. The Реверб fader shortens kick, snare and tom tails:
 // 100% and up leaves them natural, 0% cuts them right after the hit.
 function drumTail(n){
   if(!mix || mix.lv.verb==null) return 0;
-  const v = mix.mute.verb ? 0 : mix.lv.verb; if(v>=100) return 0;
+  const v = (mix.mute.verb ? 0 : mix.lv.verb)*roomScale(); if(v>=100) return 0;
   const base = n<=36 ? 0.09 : n<=40 ? 0.1 : (n>=41 && n<=50 && ![42,44,46,49].includes(n)) ? 0.16 : 0;
   return base ? base + Math.pow(v/100,1.6)*1.4 : 0;
 }
@@ -609,16 +601,12 @@ const fmt = s => { s=Math.max(0,Math.floor(s)); return Math.floor(s/60)+':'+Stri
 function setPlayIcon(){ $('edPlayIcon').innerHTML = $('mixPlayIcon').innerHTML = playing ? '<path d="M7 5h4v14H7zM13 5h4v14h-4z"/>' : '<path d="M8 5v14l11-7z"/>'; $('mixPlay').setAttribute('aria-label', playing?'Пауза':'Играть'); $('playIcon').innerHTML = playing ? '<path d="M7 5h4v14H7zM13 5h4v14h-4z"/>' : '<path d="M8 5v14l11-7z"/>'; $('play').setAttribute('aria-label', playing?'Пауза':'Играть'); }
 
 function renderKits(){
-  $('kitName').textContent = kit.name;
-  $('kits').innerHTML = KITS.map(k=>`<button class="kit" data-id="${k.id}" aria-pressed="${k===kit}"><b>${k.name}</b><small>${k.desc}</small></button>`).join('');
+  $('kits').innerHTML = KITS.map(k=>`<button class="kit" data-id="${k.id}" aria-pressed="${k===kit}" title="${k.desc}">${k.name}</button>`).join('');
 }
 async function useKit(id){
   kit=KITS.find(k=>k.id===id); store.set('kit',kit.id); roomSize=kit.fx.revLen; showRoom(); renderKits();
   fitToKit(); await loadKit(); applyFx();
 }
-// style words in a groove's name or folder (Toontrack, Groove Monkee and similar packs) -> preset
-const STYLE_HINTS = [[/punk|панк/i,'punk'],[/808|trap|electro|hip.?hop|edm|techno|house/i,'electro'],[/metal|modern|djent|metalcore|метал/i,'modern'],[/pop|поп/i,'pop'],[/rock|grunge|indie|blues|рок/i,'rock']];
-const guessKit = text => (STYLE_HINTS.find(([re])=>re.test(text))||[])[1];
 $('kits').addEventListener('click', async e=>{
   const b=e.target.closest('.kit'); if(!b) return;
   await useKit(b.dataset.id);
@@ -688,7 +676,7 @@ function select(i){ stop(); cur=i; $('curName').textContent=track().name; render
 $('tracks').addEventListener('click',e=>{
   const rm=e.target.closest('[data-rm]'); if(rm){ const i=+rm.dataset.rm; tracks.splice(i,1); saveLibrary(); select(i===cur?0:(cur>i?cur-1:cur)); return; }
   const p=e.target.closest('.pick'); if(p){ const i=+p.dataset.i, t=tracks[i]; select(i); sheet('trkSheet',false);
-    if(t.style && STYLE_KIT[t.style]!==kit.id) useKit(STYLE_KIT[t.style]).then(()=>showNote('Пресет «'+kit.name+'» под стиль примера.')); }
+  }
 });
 
 $('add').addEventListener('click',()=>{ initAudio(); $('file').click(); });
@@ -707,10 +695,7 @@ $('file').addEventListener('change', async e=>{
   }
   e.target.value=''; saveLibrary();
   if(last>=0){
-    const t=tracks[last], k=guessKit(t.title+' '+t.name);
-    if(k && k!==kit.id) await useKit(k);
-    select(last);
-    if(k) showNote(['Пресет «'+kit.name+'» выбран по названию грува.', trackNote()].filter(Boolean).join(' '));
+    select(last);   // the kit stays as the user set it
   }
   if(bad.length) showNote('Не удалось прочитать: '+bad.join(', '));
   if(last>=0) play();
@@ -751,7 +736,7 @@ function applyMix(){
     const on=!mix.mute[c.id] && (!anySolo || mix.solo[c.id]), g=on ? Math.pow(mix.lv[c.id]/100,2) : 0;
     if(c.param){ /* read by drumTail() at each hit */ }
     else if(c.id==='oh'){ ohOn=true; set(ohOut, g*0.55); }
-    else if(c.id==='amb'){ ambOn=true; set(ambOut, g*kit.fx.rev*1.4); }
+    else if(c.id==='amb'){ ambOn=true; set(ambOut, g*kit.fx.rev*1.4*roomScale()); }
     else set(buses[c.id], g);
     const st=document.querySelector(`.strip[data-ch="${c.id}"]`); if(st) st.classList.toggle('off',!on);
   });
@@ -794,8 +779,6 @@ function sheet(id, open){
   if(open){ if(openSheet) $(openSheet).hidden=true; openSheet=id; } else openSheet=null;
   $(id).hidden=$('mixBack').hidden=!open;
 }
-$('kitOpen').addEventListener('click',()=>{ initAudio(); sheet('kitSheet',true); $('kitClose').focus(); });
-$('kitClose').addEventListener('click',()=>{ sheet('kitSheet',false); $('kitOpen').focus(); });
 function openMixer(open){
   sheet('mixer',open);
   if(open){ const st=$('strips'); mixTitle();
@@ -810,9 +793,9 @@ $('mixReset').addEventListener('click',()=>{ delete mixAll[kit.id]; setupMix(); 
 // room knob = size of the room (reverb length 0.3–3 s); the Ambience fader sets how loud it is
 const ROOM_MIN=0.3, ROOM_MAX=3;
 const roomPct = () => (roomSize-ROOM_MIN)/(ROOM_MAX-ROOM_MIN)*100;
-function showRoom(){ const v=Math.round(roomPct()), k=$('roomKnob'); k.style.setProperty('--a',v/100); k.setAttribute('aria-valuenow',v); k.setAttribute('aria-valuetext',roomSize.toFixed(1)+' с'); $('revOut').textContent=roomSize.toFixed(1).replace('.',',')+' с'; }
+function showRoom(){ const v=Math.round(roomPct()), k=$('roomKnob'); k.style.setProperty('--a',v/100); k.setAttribute('aria-valuenow',v); k.setAttribute('aria-valuetext',roomSize.toFixed(1)+' с'); $('revOut').textContent=roomSize<=ROOM_MIN+0.01 ? 'сухо' : roomSize.toFixed(1).replace('.',',')+' с'; }
 let irPending=false;
-function setRoom(sec){ roomSize=Math.max(ROOM_MIN,Math.min(ROOM_MAX,sec)); showRoom();
+function setRoom(sec){ roomSize=Math.max(ROOM_MIN,Math.min(ROOM_MAX,sec)); showRoom(); if(ctx && mix) applyMix();
   if(ctx && !irPending){ irPending=true; requestAnimationFrame(()=>{ irPending=false; conv.buffer=impulse(roomSize); }); } }
 const setRoomPct = v => setRoom(ROOM_MIN+Math.max(0,Math.min(100,v))/100*(ROOM_MAX-ROOM_MIN));
 (()=>{ const k=$('roomKnob'); let y0=null, v0=0;
@@ -915,12 +898,49 @@ function edZoomTo(z, cx, cy){
   try{ localStorage.setItem('edZoom',ed.zoom.toFixed(3)); }catch(_){}
 }
 const tDist=t=>Math.hypot(t[0].clientX-t[1].clientX, t[0].clientY-t[1].clientY);
-$('edScroll').addEventListener('touchstart',e=>{ if(e.touches.length===2){ pinch={d:tDist(e.touches), z:ed.zoom}; e.preventDefault(); } },{passive:false});
+$('edScroll').addEventListener('touchstart',e=>{
+  if(e.touches.length===2){ if(drag) dragEnd(); pinch={d:tDist(e.touches), z:ed.zoom}; e.preventDefault(); }
+  else if(e.touches.length===1 && dragStart(e.touches[0].clientX, e.touches[0].clientY)) e.preventDefault();   // a press on a selected note drags it instead of scrolling
+},{passive:false});
 $('edScroll').addEventListener('touchmove',e=>{
+  if(drag && e.touches.length===1){ e.preventDefault(); dragMove(e.touches[0].clientX, e.touches[0].clientY); return; }
   if(!pinch||e.touches.length!==2) return; e.preventDefault();
   const t=e.touches; edZoomTo(pinch.z*tDist(t)/pinch.d, (t[0].clientX+t[1].clientX)/2, (t[0].clientY+t[1].clientY)/2);
 },{passive:false});
-$('edScroll').addEventListener('touchend',e=>{ if(pinch&&e.touches.length<2){ pinch=null; pinchEnd=Date.now()+350; } });
+$('edScroll').addEventListener('touchend',e=>{ if(drag) dragEnd(); if(pinch&&e.touches.length<2){ pinch=null; pinchEnd=Date.now()+350; } });
+$('edScroll').addEventListener('touchcancel',()=>{ if(drag) dragEnd(); });
+// drag selected notes: up and down moves them to another instrument, sideways moves them along the grid
+let drag=null;
+function dragStart(cx, cy){
+  if(!ed.sel.size) return false;
+  const r=$('edCanvas').getBoundingClientRect(), x=cx-r.left+$('edScroll').scrollLeft, y=cy-r.top+$('edScroll').scrollTop-ed.ruler;
+  if(y<0) return false;
+  const i=Math.floor(y/ed.row), k=x/ed.cell, st=edStep(), n=ed.lanes[i];
+  const on=[...ed.sel].some(e=>e.n===n && k>=e.t/st && k<e.t/st+1);
+  if(!on) return false;
+  const orig=new Map([...ed.sel].map(e=>[e,{t:e.t, i:ed.lanes.indexOf(e.n), cut:e.cut}]));
+  const is=[...orig.values()].map(o=>o.i), ts=[...orig.values()].map(o=>o.t);
+  drag={x0:cx, y0:cy, di:0, dk:0, orig, iMin:Math.min(...is), iMax:Math.max(...is), tMin:Math.min(...ts), tMax:Math.max(...ts)};
+  edPush(); return true;
+}
+function dragMove(cx, cy){
+  const st=edStep(), end=ed.bars*ed.grid*st;
+  const di=Math.max(-drag.iMin, Math.min(ed.lanes.length-1-drag.iMax, Math.round((cy-drag.y0)/ed.row)));
+  const dk=Math.max(-Math.floor(drag.tMin/st+1e-6), Math.min(Math.floor((end-drag.tMax)/st-1e-6), Math.round((cx-drag.x0)/ed.cell)));
+  if(di===drag.di && dk===drag.dk) return;
+  drag.di=di; drag.dk=dk;
+  drag.orig.forEach((o,e)=>{ e.n=ed.lanes[o.i+di]; e.raw=e.n; e.t=+(o.t+dk*st).toFixed(5); if(di) delete e.cut; else e.cut=o.cut; });
+  if(di) { initAudio(); hit(ed.lanes[drag.iMin+di], +$('edVel').value, ctx.currentTime); }   // hear where the notes land
+  edDraw();
+}
+function dragEnd(){
+  const d=drag; drag=null; pinchEnd=Date.now()+350;
+  if(d.di||d.dk) edCommit();
+  else { ed.undo.pop(); $('edUndo').disabled=!ed.undo.length; }
+}
+$('edCanvas').addEventListener('pointerdown',e=>{ if(e.pointerType==='touch') return; if(dragStart(e.clientX,e.clientY)){ $('edCanvas').setPointerCapture(e.pointerId); e.preventDefault(); } });
+$('edCanvas').addEventListener('pointermove',e=>{ if(drag && e.pointerType!=='touch') dragMove(e.clientX,e.clientY); });
+$('edCanvas').addEventListener('pointerup',e=>{ if(drag && e.pointerType!=='touch') dragEnd(); });
 $('edScroll').addEventListener('wheel',e=>{ if(!e.ctrlKey) return; e.preventDefault(); edZoomTo(ed.zoom*Math.exp(-e.deltaY*0.002), e.clientX, e.clientY); },{passive:false});
 // tap a lane name to hear it; press and hold to select every note of that instrument (hold again to drop the selection)
 let laneHold=null, laneHeld=false;
