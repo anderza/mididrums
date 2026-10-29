@@ -64,15 +64,18 @@ button{cursor:pointer}
 .row .time{font-size:12px;flex:none}
 .row2{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:stretch}
 .row2 .mixbtn{width:auto;padding:5px 12px;font-size:13px}
-.play{width:44px;height:44px;border-radius:3px;border:0;background:var(--brass);color:var(--brass-ink);display:grid;place-items:center;flex:none}
+.play{width:36px;height:36px;border-radius:3px;border:0;background:var(--brass);color:var(--brass-ink);display:grid;place-items:center;flex:none}
 .play svg,.ctl svg{width:20px;height:20px;fill:currentColor}
-.ctl{width:36px;height:36px;border-radius:3px;border:1px solid var(--line);background:var(--panel-2);display:grid;place-items:center;flex:none}
+.ctl{width:32px;height:32px;border-radius:3px;border:1px solid var(--line);background:var(--panel-2);display:grid;place-items:center;flex:none}
 .ctl[aria-pressed="true"]{border-color:var(--brass);color:var(--brass)}
 input[type=range]{width:100%;accent-color:var(--brass);margin:0}
 .seek{flex:1;min-width:0}
 .sliders{display:grid;grid-template-columns:1fr 1fr;gap:6px 16px}
-.field{display:flex;flex-direction:column;gap:2px;min-width:0}
-.field label{font-size:12px;color:var(--muted);display:flex;justify-content:space-between}
+.field{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:6px;min-width:0}
+.field label{white-space:nowrap}
+.field input[type=range]{height:14px}
+.field label{font-size:11px;color:var(--muted)}
+.field output{font-size:11px;font-variant-numeric:tabular-nums;color:var(--fg);min-width:3.2ch;text-align:right}
 .field label output{font-variant-numeric:tabular-nums;color:var(--fg)}
 select{background:var(--panel-2);border:1px solid var(--line);border-radius:3px;padding:6px;width:100%}
 
@@ -105,18 +108,18 @@ footer{font-size:12px;color:var(--muted)}
 .ed-top{display:flex;gap:8px;align-items:center}
 .ed-top input{flex:1;min-width:0;background:var(--panel);border:1px solid var(--line);border-radius:3px;padding:6px 8px;font-weight:700}
 .ed-tools{display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center}
-.ed-b{background:var(--panel-2);border:1px solid var(--line);border-radius:3px;padding:5px 9px;font-size:12px;white-space:nowrap}
+.ed-b{background:var(--panel-2);border:1px solid var(--line);border-radius:2px;padding:3px 6px;font-size:11px;white-space:nowrap}
 .ed-b:disabled{opacity:.4;cursor:default}
 .ed-b.primary{background:var(--brass);border-color:var(--brass);color:var(--brass-ink);font-weight:700}
 .ed-b.primary.saved{background:var(--panel-2);border-color:var(--line);color:var(--muted)}
 .ed-b.danger{color:var(--warn)}
-.ed-b.sq{width:30px;padding:5px 0;text-align:center}
-.ed-f{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--muted)}
-.ed-f select{width:auto;padding:5px 6px}
-.ed-f input[type=range]{width:90px}
-.ed-f input[type=number]{width:62px;background:var(--panel-2);border:1px solid var(--line);border-radius:3px;padding:5px 6px}
+.ed-b.sq{width:22px;padding:2px 0;text-align:center}
+.ed-f{display:flex;align-items:center;gap:4px;font-size:11px;color:var(--muted)}
+.ed-f select{width:auto;padding:2px 4px;font-size:11px}
+.ed-f input[type=range]{width:70px}
+.ed-f input[type=number]{width:50px;background:var(--panel-2);border:1px solid var(--line);border-radius:2px;padding:2px 4px;font-size:11px}
 .ed-f output{color:var(--fg);font-variant-numeric:tabular-nums;min-width:2ch;text-align:center}
-.ctl.sm{width:32px;height:32px}.ctl.sm svg{width:20px;height:20px}
+.ctl.sm{width:26px;height:26px}.ctl.sm svg{width:16px;height:16px}
 .ed-hint{font-size:12px;color:var(--muted)}
 .editor{box-sizing:border-box;height:100%;height:100dvh}
 @media (orientation:landscape) and (max-height:520px){
@@ -134,7 +137,7 @@ footer{font-size:12px;color:var(--muted)}
 .ed-lanes button.sel{background:rgba(243,210,122,.16);color:var(--hit);box-shadow:inset 3px 0 0 var(--hit)}
 .ed-grid{flex:1;min-height:0;display:flex;border:1px solid var(--line);border-radius:3px;overflow:hidden;background:var(--panel)}
 .ed-lanes{flex:none;width:92px;overflow:hidden;border-right:1px solid var(--line);background:var(--panel-2)}
-.ed-lanes button{display:flex;align-items:center;width:100%;height:30px;padding:0 8px;background:none;border:0;border-bottom:1px solid var(--line);font-size:12px;font-weight:600;text-align:left;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ed-lanes button{display:flex;align-items:center;width:100%;height:var(--row,30px);padding:0 8px;background:none;border:0;border-bottom:1px solid var(--line);font-size:12px;font-weight:600;text-align:left;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .ed-lanes .ruler{height:22px;border-bottom:1px solid var(--line)}
 .ed-scroll{flex:1;min-width:0;overflow:auto;position:relative;-webkit-overflow-scrolling:touch}
 #edSpacer{position:absolute;top:0;left:0;height:1px}
@@ -205,8 +208,8 @@ input.fader{writing-mode:vertical-lr;direction:rtl;width:32px;height:170px;margi
       <span class="time" id="time">0:00 / 0:00</span>
     </div>
     <div class="sliders">
-      <div class="field"><label for="tempo">Темп <output id="tempoOut">100%</output></label><input id="tempo" type="range" min="50" max="150" step="5" value="100"></div>
-      <div class="field"><label for="vol">Громкость <output id="volOut">80%</output></label><input id="vol" type="range" min="0" max="100" value="80"></div>
+      <div class="field"><label for="tempo">Темп</label><input id="tempo" type="range" min="50" max="150" step="5" value="100"><output id="tempoOut">100%</output></div>
+      <div class="field"><label for="vol">Громк.</label><input id="vol" type="range" min="0" max="100" value="80"><output id="volOut">80%</output></div>
     </div>
     <div class="row2">
       <select id="chan" aria-label="Канал ударных"></select>
@@ -250,7 +253,7 @@ input.fader{writing-mode:vertical-lr;direction:rtl;width:32px;height:170px;margi
       <button class="ed-b" id="edExport">Скачать MIDI</button>
       <button class="ed-b danger" id="edClear">Очистить</button>
     </div>
-    <div class="ed-hint" id="edHint">Нажмите на клетку, чтобы поставить удар, нажмите на удар, чтобы убрать. Нажатие на название инструмента даёт его послушать, удержание выделяет все его ноты.</div>
+    <div class="ed-hint" id="edHint">Нажмите на клетку, чтобы поставить удар, нажмите на удар, чтобы убрать. Нажатие на название инструмента даёт его послушать, удержание выделяет все его ноты. Сведите или разведите два пальца, чтобы изменить масштаб сетки.</div>
     <div class="ed-sel" id="edSelBar" hidden>
       <span>Выбрано: <b id="edSelInfo">0</b></span>
       <label class="ed-f">Сила <input id="edSelVel" type="range" min="1" max="127" value="100"><output id="edSelVelOut">100</output></label>
@@ -277,6 +280,7 @@ input.fader{writing-mode:vertical-lr;direction:rtl;width:32px;height:170px;margi
       <div class="knobrow"><button class="play" id="mixPlay" aria-label="Играть"><svg viewBox="0 0 24 24" id="mixPlayIcon"><path d="M8 5v14l11-7z"/></svg></button><div class="knob" id="roomKnob" role="slider" tabindex="0" aria-label="Комната" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50"><div class="knob-cap"><span class="knob-ind"></span></div></div><div class="kt"><b>Комната <output id="revOut">1,2 с</output></b></div></div>
       <ul class="hints" id="mixHints" hidden>
         <li><b>Комната</b>: размер помещения. Крутите ручку пальцем вверх или вниз, двойное нажатие возвращает значение пресета.</li>
+        <li><b>Реверб</b>: длина хвоста бочки, малого и томов. Ниже 100% хвост укорачивается, на 0% звук совсем сухой.</li>
         <li><b>Ambience</b>: громкость отзвука комнаты. <b>Overhead</b>: микрофоны над установкой, вся установка сверху.</li>
         <li><b>M</b> выключает канал, <b>S</b> оставляет его играть одного.</li>
         <li>Двойное нажатие на фейдер возвращает его громкость по умолчанию.</li>
@@ -288,7 +292,7 @@ input.fader{writing-mode:vertical-lr;direction:rtl;width:32px;height:170px;margi
     </div>
   </div>
 
-  <footer>Играются ноты ударных по стандарту General MIDI (обычно 10-й канал). Сэмплы: FluidR3 GM, лицензия MIT. Работает без интернета. Версия 12.</footer>
+  <footer>Играются ноты ударных по стандарту General MIDI (обычно 10-й канал). Сэмплы: FluidR3 GM, лицензия MIT. Работает без интернета. Версия 14.</footer>
 </div>
 
 <script>
@@ -296,10 +300,10 @@ const KITDATA = {"s":{"a8f0958a":"SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjU3LjcyLjEwMQ
 
 const KITS = [
   {id:'std',    name:'Стандарт',   desc:'Базовая установка General MIDI, почти без обработки', v:'0', fx:{low:0, mid:0, high:0, rev:0.12, revLen:1.2, thr:-6, ratio:1.2}},
-  {id:'rock',   name:'Рок',        desc:'Мощная бочка, звонкий малый, живая комната', v:'16', fx:{low:4, mid:-1, high:2, rev:0.32, revLen:1.8, thr:-18, ratio:3}},
-  {id:'punk',   name:'Панк-рок',   desc:'Басовый и плотный, мягкий верх, без комнаты', v:'0', over:{37:'11',38:'11',40:'11'}, fx:{low:7, mid:-2, high:-2, rev:0.2, revLen:0.6, thr:-28, ratio:6}, faders:{amb:0}},
-  {id:'modern', name:'Модерн',     desc:'Плотный компрессированный звук, щелчок бочки', v:'11', fx:{low:5, mid:-4, high:5, rev:0.10, revLen:0.9, thr:-28, ratio:8}},
-  {id:'pop',    name:'Поп',        desc:'Чистая студийная установка, мягкий ревер',     v:'0',  fx:{low:1, mid:0,  high:3, rev:0.22, revLen:1.4, thr:-20, ratio:2.5}},
+  {id:'rock',   name:'Рок',        desc:'Мощная бочка, звонкий малый, живая комната', v:'16', fx:{low:4, mid:-1, high:2, rev:0.14, revLen:1.3, thr:-18, ratio:3, gain:3}, faders:{verb:45}},
+  {id:'punk',   name:'Панк-рок',   desc:'Басовый и плотный, мягкий верх, без комнаты', v:'0', over:{37:'11',38:'11',40:'11'}, fx:{low:7, mid:-2, high:-2, rev:0.2, revLen:0.6, thr:-28, ratio:6, gain:5}, faders:{amb:0, verb:40}},
+  {id:'modern', name:'Модерн',     desc:'Плотный компрессированный звук, щелчок бочки', v:'11', fx:{low:5, mid:-4, high:5, rev:0.05, revLen:0.7, thr:-28, ratio:8, gain:6}, faders:{verb:20}},
+  {id:'pop',    name:'Поп',        desc:'Чистая студийная установка, мягкий ревер',     v:'0',  fx:{low:1, mid:0,  high:3, rev:0.22, revLen:1.4, thr:-20, ratio:2.5}, faders:{verb:85}},
   {id:'electro',name:'Электро 808',desc:'Драм-машина: гулкая бочка и сухой малый',      v:'21', fx:{low:3, mid:-1, high:1, rev:0.12, revLen:1.0, thr:-20, ratio:3}},
 ];
 
@@ -317,17 +321,17 @@ const GROUPS = [
    'oh' (overheads) and 'amb' (room mics) hear every drum. Notes with no channel play at unity. */
 const N = {K:[35,36], SN:[37,38,39,40], HH:[42,44,46], T1:[48,50], T2:[45,47], FT:[41,43], CR:[49,57], RD:[51,53,59], FX:[52,55]};
 const ch = (id,name,notes) => ({id,name,notes});
-const OH = ch('oh','Overhead'), AMB = ch('amb','Ambience');
+const OH = ch('oh','Overhead'), VERB = {id:'verb', name:'Реверб', param:true}, AMB = ch('amb','Ambience');
 const BASIC = [ch('k','Бочка',N.K), ch('sn','Малый',N.SN), ch('hh','Хай-хэт',N.HH)];
 const TOMS = ch('tom','Томы',[...N.T1,...N.T2,...N.FT]), CYM = ch('cym','Тарелки',[...N.CR,...N.RD,...N.FX]), PERC = ch('perc','Перк.','rest');
 const SPLIT_TOMS = [ch('t1','Том 1',N.T1), ch('t2','Том 2',N.T2), ch('ft','Флор',N.FT)];
 const MIXES = {
-  std:    [...BASIC, TOMS, CYM, PERC, OH, AMB],
-  rock:   [...BASIC, ...SPLIT_TOMS, ch('cr','Крэш',[...N.CR,...N.FX]), ch('rd','Райд',N.RD), OH, AMB],
-  punk:   [...BASIC, ch('t1','Том',[...N.T1,...N.T2]), ch('ft','Флор',N.FT), CYM, OH, AMB],
-  modern: [...BASIC, ...SPLIT_TOMS, ch('cr','Крэш',N.CR), ch('rd','Райд',N.RD), ch('fx','Сплэш Чайна',N.FX), OH, AMB],
-  pop:    [...BASIC, TOMS, CYM, PERC, OH, AMB],
-  electro:[ch('k','Бочка',N.K), ch('sn','Малый Клэп',N.SN), ch('hh','Хай-хэт',N.HH), TOMS, CYM, PERC, AMB],
+  std:    [...BASIC, TOMS, CYM, PERC, OH, VERB, AMB],
+  rock:   [...BASIC, ...SPLIT_TOMS, ch('cr','Крэш',[...N.CR,...N.FX]), ch('rd','Райд',N.RD), OH, VERB, AMB],
+  punk:   [...BASIC, ch('t1','Том',[...N.T1,...N.T2]), ch('ft','Флор',N.FT), CYM, OH, VERB, AMB],
+  modern: [...BASIC, ...SPLIT_TOMS, ch('cr','Крэш',N.CR), ch('rd','Райд',N.RD), ch('fx','Сплэш Чайна',N.FX), OH, VERB, AMB],
+  pop:    [...BASIC, TOMS, CYM, PERC, OH, VERB, AMB],
+  electro:[ch('k','Бочка',N.K), ch('sn','Малый Клэп',N.SN), ch('hh','Хай-хэт',N.HH), TOMS, CYM, PERC, VERB, AMB],
 };
 const FADER_DEFAULT = {oh:70};
 const faderDefault = id => (kit.faders && kit.faders[id]!=null) ? kit.faders[id] : (FADER_DEFAULT[id] ?? 100);
@@ -473,9 +477,9 @@ function makeExample(def){
 
 /* ---------- audio ---------- */
 let chans=[], buses={}, noteChan={};   // current kit's channel list, id -> close bus, note -> channel id
-let mixAll = (()=>{ try{ return JSON.parse(store.get('mix4'))||{}; }catch(e){ return {}; } })();
+let mixAll = (()=>{ try{ return JSON.parse(store.get('mix5'))||{}; }catch(e){ return {}; } })();
 let mix;   // settings of the current kit: {lv:{id:%}, mute:{id:bool}, solo:{id:bool}}
-let ctx=null, master, comp, eqLow, eqMid, eqHigh, conv, restBus, ohIn, ohHp, ohOut, ambIn, ambOut;
+let makeup, limiter, ctx=null, master, comp, eqLow, eqMid, eqHigh, conv, restBus, ohIn, ohHp, ohOut, ambIn, ambOut;
 const decoded = {};              // sample hash -> AudioBuffer
 let kit = KITS.find(k=>k.id===store.get('kit')) || KITS[0];   // KITS[0] is the default kit
 let roomSize = kit.fx.revLen;   // seconds of reverb tail
@@ -494,7 +498,9 @@ function initAudio(){
   eqHigh=ctx.createBiquadFilter(); eqHigh.type='highshelf'; eqHigh.frequency.value=7500;
   comp=ctx.createDynamicsCompressor(); comp.attack.value=0.006; comp.release.value=0.12; comp.knee.value=6;
   master=ctx.createGain(); master.gain.value=$('vol').value/100;
-  eqLow.connect(eqMid).connect(eqHigh).connect(comp).connect(master);
+  makeup=ctx.createGain(); limiter=ctx.createDynamicsCompressor();
+  limiter.threshold.value=-2; limiter.knee.value=0; limiter.ratio.value=20; limiter.attack.value=0.002; limiter.release.value=0.08;
+  eqLow.connect(eqMid).connect(eqHigh).connect(comp).connect(makeup).connect(master);
   restBus=ctx.createGain(); restBus.connect(eqLow);
   // overheads: the whole kit from above, thin on low end
   ohIn=ctx.createGain(); ohHp=ctx.createBiquadFilter(); ohHp.type='highpass'; ohHp.frequency.value=320; ohOut=ctx.createGain();
@@ -502,19 +508,28 @@ function initAudio(){
   // ambience: room mics through the reverb, after the bus compressor
   ambIn=ctx.createGain(); conv=ctx.createConvolver(); ambOut=ctx.createGain();
   ambIn.connect(conv).connect(ambOut).connect(master);
-  master.connect(ctx.destination);
+  master.connect(limiter).connect(ctx.destination);
   buildBuses(); applyFx();
 }
 function buildBuses(){
   Object.values(buses).forEach(b=>b.disconnect());
-  buses={}; chans.forEach(c=>{ if(c.notes){ const b=ctx.createGain(); b.connect(eqLow); buses[c.id]=b; } });
+  buses={}; chans.forEach(c=>{ if(Array.isArray(c.notes)||c.notes==='rest'){ const b=ctx.createGain(); b.connect(eqLow); buses[c.id]=b; } });
   applyMix();
 }
 function applyFx(){
   if(!ctx) return; const f=kit.fx;
   eqLow.gain.value=f.low; eqMid.gain.value=f.mid; eqHigh.gain.value=f.high;
   comp.threshold.value=f.thr; comp.ratio.value=f.ratio;
+  makeup.gain.value=Math.pow(10,(f.gain||0)/20);   // brings compressed presets back up to the others' loudness
   conv.buffer=impulse(roomSize);
+}
+// The samples carry their own room sound in the tail. The Реверб fader shortens kick, snare and tom tails:
+// 100% and up leaves them natural, 0% cuts them right after the hit.
+function drumTail(n){
+  if(!mix || mix.lv.verb==null) return 0;
+  const v = mix.mute.verb ? 0 : mix.lv.verb; if(v>=100) return 0;
+  const base = n<=36 ? 0.09 : n<=40 ? 0.1 : (n>=41 && n<=50 && ![42,44,46,49].includes(n)) ? 0.16 : 0;
+  return base ? base + Math.pow(v/100,1.6)*1.4 : 0;
 }
 function zoneFor(n){ return (kit.over && kit.over[n] && KITDATA.k[kit.over[n]][n]) || KITDATA.k[kit.v][n] || KITDATA.k['0'][n] || null; }
 async function loadKit(){
@@ -540,6 +555,7 @@ function hit(n,vel,when,cut){
   if(n===46) openHat={g,t:when};
   if(cut){ g.gain.setTargetAtTime(0, when+cut, cut*0.35); }
   else if(n===42||n===44){ g.gain.setTargetAtTime(0, when+0.045, 0.022); }   // the sample's tail is loose; damp it so the hat sounds shut
+  else { const tail=drumTail(n); if(tail) g.gain.setTargetAtTime(0, when+tail, tail*0.25); }
   src.start(when, Math.min(anchor||0, buf.duration/2));
   return true;
 }
@@ -671,7 +687,7 @@ $('add2').addEventListener('click',()=>{ initAudio(); sheet('trkSheet',false); $
 $('trkOpen').addEventListener('click',()=>{ renderTracks(); sheet('trkSheet',true); $('trkClose').focus(); });
 $('trkClose').addEventListener('click',()=>{ sheet('trkSheet',false); $('trkOpen').focus(); });
 $('newTrack').addEventListener('click',()=>{
-  tracks.push({name:'Новый бит '+tracks.length, bpm:120, chan:9, events:[], saved:false, dirty:true, bars:4});
+  tracks.push({name:'Новый бит '+tracks.length, bpm:120, chan:9, events:[], saved:false, dirty:true, bars:8});
   sheet('trkSheet',false); select(tracks.length-1); openEditor();
 });
 $('file').addEventListener('change', async e=>{
@@ -724,13 +740,14 @@ function applyMix(){
   let ohOn=false, ambOn=false;
   chans.forEach(c=>{
     const on=!mix.mute[c.id] && (!anySolo || mix.solo[c.id]), g=on ? Math.pow(mix.lv[c.id]/100,2) : 0;
-    if(c.id==='oh'){ ohOn=true; set(ohOut, g*0.55); }
+    if(c.param){ /* read by drumTail() at each hit */ }
+    else if(c.id==='oh'){ ohOn=true; set(ohOut, g*0.55); }
     else if(c.id==='amb'){ ambOn=true; set(ambOut, g*kit.fx.rev*1.4); }
     else set(buses[c.id], g);
     const st=document.querySelector(`.strip[data-ch="${c.id}"]`); if(st) st.classList.toggle('off',!on);
   });
   if(ctx){ if(!ohOn) set(ohOut,0); if(!ambOn) set(ambOut,0); set(restBus, anySolo?0:1); }
-  mixAll[kit.id]=mix; store.set('mix4',JSON.stringify(mixAll));
+  mixAll[kit.id]=mix; store.set('mix5',JSON.stringify(mixAll));
 }
 function renderMixer(){
   const strip=(id,name,v,cls)=>`<div class="strip${cls}" data-ch="${id}">
@@ -738,7 +755,7 @@ function renderMixer(){
     <span class="meter" id="mt-${id}"></span>
     <div class="fwrap"><input class="fader" id="fader-${id}" type="range" min="0" max="${id==='m'?100:130}" value="${v}" aria-label="${name}"></div>
     <span class="nm">${name}</span>
-    ${id==='m' ? '<div class="ms"></div>' : `<div class="ms"><button class="m" aria-pressed="${mix.mute[id]}" aria-label="Выключить: ${name}">M</button><button class="s" aria-pressed="${mix.solo[id]}" aria-label="Соло: ${name}">S</button></div>`}
+    ${id==='m'||id==='verb' ? '<div class="ms"></div>' : `<div class="ms"><button class="m" aria-pressed="${mix.mute[id]}" aria-label="Выключить: ${name}">M</button><button class="s" aria-pressed="${mix.solo[id]}" aria-label="Соло: ${name}">S</button></div>`}
   </div>`;
   $('strips').style.gridTemplateColumns=`repeat(${chans.length+1},minmax(50px,1fr))`;
   $('strips').innerHTML = chans.map(c=>strip(c.id,c.name,mix.lv[c.id],(c.notes?'':' mic')+(usedCh.size && !usedCh.has(c.id)?' unused':''))).join('') + strip('m','Общий',+$('vol').value,' master');
@@ -801,7 +818,7 @@ const setRoomPct = v => setRoom(ROOM_MIN+Math.max(0,Math.min(100,v))/100*(ROOM_M
 /* ---------- track editor: a drum-machine grid over the drum channel ---------- */
 const DRUM_NAMES = {35:'Бочка 2',36:'Бочка',37:'Римшот',38:'Малый',39:'Хлопок',40:'Малый 2',41:'Флор низ',42:'Хэт закр.',43:'Флор',44:'Хэт педаль',45:'Том низ',46:'Хэт откр.',47:'Том сред.',48:'Том 1',49:'Крэш',50:'Том выс.',51:'Райд',52:'Чайна',53:'Райд бел.',54:'Бубен',55:'Сплэш',56:'Ковбелл',57:'Крэш 2',58:'Вибраслэп',59:'Райд 2',60:'Бонго выс.',61:'Бонго низ',62:'Конга глух.',63:'Конга выс.',64:'Конга низ',65:'Тимбал выс.',66:'Тимбал низ',67:'Агого выс.',68:'Агого низ',69:'Кабаса',70:'Маракас',71:'Свисток кор.',72:'Свисток дл.',73:'Гуиро кор.',74:'Гуиро дл.',75:'Клавес',76:'Вуд-блок выс.',77:'Вуд-блок низ',78:'Куика глух.',79:'Куика откр.',80:'Треугольник глух.',81:'Треугольник'};
 const LANE_ORDER = [49,57,55,52,51,53,59,46,42,44,50,48,47,45,43,41,40,38,39,37,36,35];
-const ed = {grid:16, cell:24, row:30, ruler:22, lanes:[], undo:[], bars:4, open:false, sel:new Set()};   // sel holds event objects
+const ed = {grid:16, cell:24, row:30, zoom:1, ruler:22, lanes:[], undo:[], bars:4, open:false, sel:new Set()};   // sel holds event objects
 const edStep = () => 60/track().bpm*4/ed.grid;              // seconds per cell
 const barSec = () => 60/track().bpm*4;
 function edEvents(){ return track().events.filter(e=>e.ch===chan && e.n>=0); }
@@ -815,7 +832,7 @@ function openEditor(){
   if(t.chan===undefined) t.chan=chan;
   ed.open=true; ed.undo=[]; ed.lanes=[]; ed.sel.clear(); edSelUI(); edFullscreen(true);
   const last=edEvents().reduce((m,e)=>Math.max(m,e.t),0);
-  ed.bars = t.bars || Math.max(1, Math.ceil((last+0.001)/barSec()));
+  ed.bars = t.bars || Math.max(8, Math.ceil((last+0.001)/barSec()));
   $('edName').value=t.name; $('edBpm').value=t.bpm; $('edUndo').disabled=true;
   $('edAddLane').innerHTML='<option value="">+ Инструмент</option>'+Object.entries(DRUM_NAMES).map(([n,nm])=>`<option value="${n}">${nm}</option>`).join('');
   edLanes(); $('editor').hidden=false; edSaved(!t.dirty); edLayout();
@@ -824,6 +841,7 @@ function openEditor(){
 function closeEditor(){ edFullscreen(false); ed.sel.clear(); ed.open=false; $('editor').hidden=true; renderTracks(); $('edit').focus(); }
 function edSaved(ok){ const b=$('edSave'); b.classList.toggle('saved',ok); b.textContent=ok?'Сохранено':'Сохранить'; }
 function edLayout(){
+  ed.cell=Math.round(24*ed.zoom*10)/10; ed.row=Math.round(Math.min(56,Math.max(22,30*Math.sqrt(ed.zoom)))); $('edLanes').style.setProperty('--row',ed.row+'px');
   $('edBars').textContent=ed.bars;
   setTimeout(edSelUI);
   $('edLanes').innerHTML='<div class="ruler"></div>'+ed.lanes.map(n=>`<button data-n="${n}">${DRUM_NAMES[n]||('Нота '+n)}</button>`).join('');
@@ -866,6 +884,7 @@ function edPush(){ ed.undo.push(JSON.stringify(track().events)); if(ed.undo.leng
 $('edScroll').addEventListener('scroll',()=>{ $('edLanes').scrollTop=$('edScroll').scrollTop; edDraw(); },{passive:true});
 window.addEventListener('resize',()=>edDraw());
 $('edCanvas').addEventListener('click',e=>{
+  if(Date.now()<pinchEnd) return;   // the finger lifted after a pinch is not a tap
   const r=$('edCanvas').getBoundingClientRect(), x=e.clientX-r.left+$('edScroll').scrollLeft, y=e.clientY-r.top+$('edScroll').scrollTop-ed.ruler;
   if(y<0){ seekTo(Math.floor(x/ed.cell)*edStep()); edDraw(); return; }   // tap the ruler to move the playhead
   const i=Math.floor(y/ed.row), k=Math.floor(x/ed.cell); if(i<0||i>=ed.lanes.length||k<0||k>=ed.bars*ed.grid) return;
@@ -876,6 +895,24 @@ $('edCanvas').addEventListener('click',e=>{
   else { const v=+$('edVel').value; evAll.push({t:+t0.toFixed(5), ch:chan, n, raw:n, v}); hit(n,v,ctx.currentTime); }
   edCommit();
 });
+// pinch with two fingers to zoom the grid (ctrl + wheel on a computer); the point between the fingers stays put
+let pinch=null, pinchEnd=0;
+try{ ed.zoom=Math.min(4,Math.max(0.35,+localStorage.getItem('edZoom')||1)); }catch(_){}
+function edZoomTo(z, cx, cy){
+  const sc=$('edScroll'), r=sc.getBoundingClientRect(), ox=cx-r.left, oy=cy-r.top;
+  const kx=(sc.scrollLeft+ox)/ed.cell, ky=(sc.scrollTop+oy-ed.ruler)/ed.row;
+  ed.zoom=Math.min(4,Math.max(0.35,z)); edLayout();
+  sc.scrollLeft=kx*ed.cell-ox; sc.scrollTop=Math.max(0,ky*ed.row+ed.ruler-oy); edDraw();
+  try{ localStorage.setItem('edZoom',ed.zoom.toFixed(3)); }catch(_){}
+}
+const tDist=t=>Math.hypot(t[0].clientX-t[1].clientX, t[0].clientY-t[1].clientY);
+$('edScroll').addEventListener('touchstart',e=>{ if(e.touches.length===2){ pinch={d:tDist(e.touches), z:ed.zoom}; e.preventDefault(); } },{passive:false});
+$('edScroll').addEventListener('touchmove',e=>{
+  if(!pinch||e.touches.length!==2) return; e.preventDefault();
+  const t=e.touches; edZoomTo(pinch.z*tDist(t)/pinch.d, (t[0].clientX+t[1].clientX)/2, (t[0].clientY+t[1].clientY)/2);
+},{passive:false});
+$('edScroll').addEventListener('touchend',e=>{ if(pinch&&e.touches.length<2){ pinch=null; pinchEnd=Date.now()+350; } });
+$('edScroll').addEventListener('wheel',e=>{ if(!e.ctrlKey) return; e.preventDefault(); edZoomTo(ed.zoom*Math.exp(-e.deltaY*0.002), e.clientX, e.clientY); },{passive:false});
 // tap a lane name to hear it; press and hold to select every note of that instrument (hold again to drop the selection)
 let laneHold=null, laneHeld=false;
 $('edLanes').addEventListener('pointerdown',e=>{
