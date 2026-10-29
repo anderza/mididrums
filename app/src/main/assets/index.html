@@ -30,11 +30,11 @@ button{cursor:pointer}
 :focus-visible{outline:2px solid var(--brass);outline-offset:2px}
 
 /* kits */
-.kitbtn{width:100%;display:flex;align-items:center;gap:12px;background:var(--panel);border:1px solid var(--brass);border-radius:12px;padding:12px 14px;text-align:left}
+.kitbtn{width:100%;display:flex;align-items:center;gap:10px;background:var(--panel);border:1px solid var(--brass);border-radius:3px;padding:7px 10px;text-align:left}
 .kitbtn .kl{font-family:var(--display);font-weight:500;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
-.kitbtn .kn{flex:1;min-width:0;font-family:var(--display);font-weight:600;font-size:21px;letter-spacing:.03em;text-transform:uppercase;color:var(--brass);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.kitbtn .kn{flex:1;min-width:0;font-family:var(--display);font-weight:600;font-size:17px;letter-spacing:.03em;text-transform:uppercase;color:var(--brass);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .kitbtn svg{width:26px;height:26px;fill:var(--fg);flex:none}
-.knobrow{display:flex;align-items:center;gap:14px;background:var(--panel-2);border-radius:10px;padding:10px 14px}
+.knobrow{display:flex;align-items:center;gap:14px;background:var(--panel-2);border-radius:3px;padding:10px 14px}
 .knob{width:62px;height:62px;border-radius:50%;flex:none;touch-action:none;cursor:ns-resize;background:conic-gradient(from 225deg,var(--brass) 0 calc(var(--a,.5)*270deg),var(--line) 0 270deg,transparent 0);display:grid;place-items:center}
 .knob-cap{width:48px;height:48px;border-radius:50%;background:radial-gradient(circle at 40% 35%,#4a4f5c,#22252c 70%);box-shadow:0 2px 6px rgba(0,0,0,.5);position:relative;transform:rotate(calc(-135deg + var(--a,.5)*270deg))}
 .knob-ind{position:absolute;left:50%;top:5px;width:3px;height:12px;margin-left:-1.5px;border-radius:2px;background:var(--hit)}
@@ -43,26 +43,26 @@ button{cursor:pointer}
 .knobrow .kt output{font-variant-numeric:tabular-nums;color:var(--brass);font-weight:700}
 .knobrow .kt small{color:var(--muted);font-size:12px}
 .kits{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
-.kit{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:12px 14px;text-align:left;display:flex;flex-direction:column;gap:3px;min-width:0}
-.kit b{font-family:var(--display);font-weight:600;font-size:19px;letter-spacing:.03em;text-transform:uppercase}
+.kit{background:var(--panel);border:1px solid var(--line);border-radius:3px;padding:8px 10px;text-align:left;display:flex;flex-direction:column;gap:3px;min-width:0}
+.kit b{font-family:var(--display);font-weight:600;font-size:16px;letter-spacing:.03em;text-transform:uppercase}
 .kit small{color:var(--muted);font-size:12.5px;line-height:1.35}
 .kit[aria-pressed="true"]{border-color:var(--brass);background:var(--panel-2);box-shadow:inset 0 0 0 1px var(--brass)}
 .kit[aria-pressed="true"] b{color:var(--brass)}
 
 /* pads */
-.pads{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
-.pad{aspect-ratio:1;max-width:100%;border-radius:50%;background:radial-gradient(circle at 50% 45%,#30343e 0 55%,#23262e 56% 100%);border:2px solid var(--line);display:flex;align-items:center;justify-content:center;text-align:center;font-size:11.5px;font-weight:600;color:var(--muted);padding:4px;transition:background .12s,border-color .12s,color .12s,transform .08s;user-select:none}
-.pad.on{background:radial-gradient(circle at 50% 45%,var(--hit) 0 55%,var(--brass) 56% 100%);border-color:var(--hit);color:var(--brass-ink);transform:scale(.95);transition:none}
+.pads{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.pad{aspect-ratio:1.7;max-width:100%;border-radius:3px;background:linear-gradient(#2e323b,#23262e);border:2px solid var(--line);display:flex;align-items:center;justify-content:center;text-align:center;font-size:11.5px;font-weight:600;color:var(--muted);padding:4px;transition:background .12s,border-color .12s,color .12s,transform .08s;user-select:none}
+.pad.on{background:linear-gradient(var(--hit),var(--brass));border-color:var(--hit);color:var(--brass-ink);transform:scale(.95);transition:none}
 
 /* transport */
-.transport{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px;display:flex;flex-direction:column;gap:12px}
+.transport{background:var(--panel);border:1px solid var(--line);border-radius:4px;padding:12px;display:flex;flex-direction:column;gap:10px}
 .now{display:flex;justify-content:space-between;gap:10px;align-items:baseline;min-width:0}
 .now .name{font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
 .time{font-variant-numeric:tabular-nums;color:var(--muted);font-size:13px;flex:none}
 .row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
-.play{width:58px;height:58px;border-radius:50%;border:0;background:var(--brass);color:var(--brass-ink);display:grid;place-items:center;flex:none}
-.play svg,.ctl svg{width:24px;height:24px;fill:currentColor}
-.ctl{width:44px;height:44px;border-radius:50%;border:1px solid var(--line);background:var(--panel-2);display:grid;place-items:center;flex:none}
+.play{width:44px;height:44px;border-radius:3px;border:0;background:var(--brass);color:var(--brass-ink);display:grid;place-items:center;flex:none}
+.play svg,.ctl svg{width:20px;height:20px;fill:currentColor}
+.ctl{width:36px;height:36px;border-radius:3px;border:1px solid var(--line);background:var(--panel-2);display:grid;place-items:center;flex:none}
 .ctl[aria-pressed="true"]{border-color:var(--brass);color:var(--brass)}
 input[type=range]{width:100%;accent-color:var(--brass);margin:0}
 .seek{flex:1;min-width:0}
@@ -71,13 +71,13 @@ input[type=range]{width:100%;accent-color:var(--brass);margin:0}
 .field{display:flex;flex-direction:column;gap:4px;min-width:0}
 .field label{font-size:12px;color:var(--muted);display:flex;justify-content:space-between}
 .field label output{font-variant-numeric:tabular-nums;color:var(--fg)}
-select{background:var(--panel-2);border:1px solid var(--line);border-radius:8px;padding:8px;width:100%}
+select{background:var(--panel-2);border:1px solid var(--line);border-radius:3px;padding:6px;width:100%}
 
 /* tracks */
-.add{width:100%;border:1.5px dashed var(--brass);background:transparent;color:var(--brass);border-radius:12px;padding:14px;font-weight:700;font-size:16px;display:flex;align-items:center;justify-content:center;gap:8px}
+.add{width:100%;border:1.5px dashed var(--brass);background:transparent;color:var(--brass);border-radius:3px;padding:9px;font-weight:700;font-size:14px;display:flex;align-items:center;justify-content:center;gap:8px}
 .add svg{width:20px;height:20px;fill:currentColor}
 .tracks{list-style:none;margin:10px 0 0;padding:0;display:flex;flex-direction:column;gap:6px}
-.track{display:flex;align-items:center;gap:10px;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px 12px;min-width:0}
+.track{display:flex;align-items:center;gap:10px;background:var(--panel);border:1px solid var(--line);border-radius:3px;padding:8px 10px;min-width:0}
 .track.sel{border-color:var(--brass)}
 .track .pick{flex:1;min-width:0;background:none;border:0;text-align:left;padding:0;display:flex;flex-direction:column}
 .track .t1{font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
@@ -88,19 +88,19 @@ footer{font-size:12px;color:var(--muted)}
 
 /* track bar + editor */
 .trackbar{display:flex;gap:8px;align-items:center}
-.trk{flex:1;min-width:0;display:flex;align-items:center;gap:10px;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:10px 12px;text-align:left;height:48px}
+.trk{flex:1;min-width:0;display:flex;align-items:center;gap:8px;background:var(--panel);border:1px solid var(--line);border-radius:3px;padding:6px 10px;text-align:left;height:38px}
 .trk .kl{font-family:var(--display);font-weight:500;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);flex:none}
 .trk .tn{flex:1;min-width:0;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .trk .tc{font-size:12px;color:var(--muted);flex:none;font-variant-numeric:tabular-nums}
 .trk svg{width:22px;height:22px;fill:var(--fg);flex:none}
-.trackbar .ctl{width:48px;height:48px;border-radius:12px}
-.add.ghost{border-style:solid;border-color:var(--line);color:var(--fg);font-weight:600;font-size:14px;padding:11px}
+.trackbar .ctl{width:38px;height:38px;border-radius:3px}
+.add.ghost{border-style:solid;border-color:var(--line);color:var(--fg);font-weight:600;font-size:13px;padding:8px}
 .track .unsaved{color:var(--hit);font-size:12px}
 .editor{position:fixed;inset:0;z-index:30;background:var(--bg);display:flex;flex-direction:column;gap:8px;padding-top:calc(10px + env(safe-area-inset-top,0px));padding-bottom:calc(10px + env(safe-area-inset-bottom,0px));padding-left:max(12px,env(safe-area-inset-left,0px));padding-right:max(12px,env(safe-area-inset-right,0px))}
 .ed-top{display:flex;gap:8px;align-items:center}
-.ed-top input{flex:1;min-width:0;background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:9px 10px;font-weight:700}
+.ed-top input{flex:1;min-width:0;background:var(--panel);border:1px solid var(--line);border-radius:3px;padding:6px 8px;font-weight:700}
 .ed-tools{display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center}
-.ed-b{background:var(--panel-2);border:1px solid var(--line);border-radius:8px;padding:7px 11px;font-size:13px;white-space:nowrap}
+.ed-b{background:var(--panel-2);border:1px solid var(--line);border-radius:3px;padding:5px 9px;font-size:12px;white-space:nowrap}
 .ed-b:disabled{opacity:.4;cursor:default}
 .ed-b.primary{background:var(--brass);border-color:var(--brass);color:var(--brass-ink);font-weight:700}
 .ed-b.primary.saved{background:var(--panel-2);border-color:var(--line);color:var(--muted)}
@@ -109,11 +109,25 @@ footer{font-size:12px;color:var(--muted)}
 .ed-f{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--muted)}
 .ed-f select{width:auto;padding:5px 6px}
 .ed-f input[type=range]{width:90px}
-.ed-f input[type=number]{width:62px;background:var(--panel-2);border:1px solid var(--line);border-radius:8px;padding:5px 6px}
+.ed-f input[type=number]{width:62px;background:var(--panel-2);border:1px solid var(--line);border-radius:3px;padding:5px 6px}
 .ed-f output{color:var(--fg);font-variant-numeric:tabular-nums;min-width:2ch;text-align:center}
-.ctl.sm{width:38px;height:38px}.ctl.sm svg{width:20px;height:20px}
+.ctl.sm{width:32px;height:32px}.ctl.sm svg{width:20px;height:20px}
 .ed-hint{font-size:12px;color:var(--muted)}
-.ed-grid{flex:1;min-height:0;display:flex;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--panel)}
+.editor{box-sizing:border-box;height:100%;height:100dvh}
+@media (orientation:landscape) and (max-height:520px){
+  .editor{gap:4px;padding-top:max(4px,env(safe-area-inset-top,0px));padding-bottom:max(4px,env(safe-area-inset-bottom,0px))}
+  .ed-top,.ed-tools{flex-wrap:nowrap;overflow-x:auto}
+  .ed-top{gap:6px}.ed-top input{flex:0 1 220px}
+  .ed-tools{gap:8px;padding-bottom:2px}.ed-tools>*{flex:none}
+  .ed-hint{display:none}
+  .ed-lanes{width:84px}
+  .ed-sel{flex-wrap:nowrap;overflow-x:auto;padding:3px 6px}.ed-sel>*{flex:none}
+}
+.ed-sel{display:flex;flex-wrap:wrap;gap:6px 10px;align-items:center;background:var(--panel-2);border:1px solid var(--hit);border-radius:3px;padding:5px 8px;font-size:12px}
+.ed-sel b{color:var(--hit)}
+.ed-lanes button{-webkit-touch-callout:none;user-select:none;-webkit-user-select:none;touch-action:manipulation}
+.ed-lanes button.sel{background:rgba(243,210,122,.16);color:var(--hit);box-shadow:inset 3px 0 0 var(--hit)}
+.ed-grid{flex:1;min-height:0;display:flex;border:1px solid var(--line);border-radius:3px;overflow:hidden;background:var(--panel)}
 .ed-lanes{flex:none;width:92px;overflow:hidden;border-right:1px solid var(--line);background:var(--panel-2)}
 .ed-lanes button{display:flex;align-items:center;width:100%;height:30px;padding:0 8px;background:none;border:0;border-bottom:1px solid var(--line);font-size:12px;font-weight:600;text-align:left;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .ed-lanes .ruler{height:22px;border-bottom:1px solid var(--line)}
@@ -122,17 +136,17 @@ footer{font-size:12px;color:var(--muted)}
 #edCanvas{position:sticky;top:0;left:0;display:block;touch-action:pan-x pan-y}
 
 /* mixer */
-.mixbtn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:11px;border-radius:10px;border:1px solid var(--line);background:var(--panel-2);font-family:var(--display);font-weight:500;font-size:15px;letter-spacing:.12em;text-transform:uppercase}
+.mixbtn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:7px;border-radius:3px;border:1px solid var(--line);background:var(--panel-2);font-family:var(--display);font-weight:500;font-size:15px;letter-spacing:.12em;text-transform:uppercase}
 .mixbtn svg{width:20px;height:20px;fill:var(--brass)}
 .mix-back{position:fixed;inset:0;background:rgba(5,6,8,.6);z-index:20}
-.mixer{position:fixed;left:0;right:0;bottom:0;z-index:21;background:var(--panel);border-top:1px solid var(--line);border-radius:16px 16px 0 0;box-shadow:0 -12px 40px rgba(0,0,0,.45);padding-top:14px;padding-bottom:calc(16px + env(safe-area-inset-bottom,0px));padding-left:max(12px,env(safe-area-inset-left,0px));padding-right:max(12px,env(safe-area-inset-right,0px));max-height:92%;overflow-y:auto}
+.mixer{position:fixed;left:0;right:0;bottom:0;z-index:21;background:var(--panel);border-top:1px solid var(--line);border-radius:4px 4px 0 0;box-shadow:0 -12px 40px rgba(0,0,0,.45);padding-top:14px;padding-bottom:calc(16px + env(safe-area-inset-bottom,0px));padding-left:max(12px,env(safe-area-inset-left,0px));padding-right:max(12px,env(safe-area-inset-right,0px));max-height:92%;overflow-y:auto}
 .mixer-in{max-width:620px;margin:0 auto;display:flex;flex-direction:column;gap:12px}
 .mix-head{display:flex;align-items:center;justify-content:space-between;gap:10px}
 .mix-head h2{margin:0;color:var(--fg);font-size:16px}
 .mix-head .acts{display:flex;gap:8px}
-.mix-head button{background:var(--panel-2);border:1px solid var(--line);border-radius:8px;padding:6px 12px;font-size:13px}
+.mix-head button{background:var(--panel-2);border:1px solid var(--line);border-radius:3px;padding:5px 10px;font-size:13px}
 .strips{display:grid;grid-template-columns:repeat(8,minmax(40px,1fr));gap:4px;overflow-x:auto;padding-bottom:4px}
-.strip{display:flex;flex-direction:column;align-items:center;gap:6px;background:var(--panel-2);border-radius:8px;padding:8px 2px;min-width:0}
+.strip{display:flex;flex-direction:column;align-items:center;gap:6px;background:var(--panel-2);border-radius:3px;padding:8px 2px;min-width:0}
 .mh{display:flex;flex-direction:column;gap:2px}.mh small{font-size:12px;color:var(--muted)}
 .strip.unused .fwrap,.strip.unused .nm,.strip.unused .lv{opacity:.35}
 .strip.mic .nm{font-size:9px;overflow-wrap:normal;letter-spacing:-.01em}
@@ -147,7 +161,7 @@ input.fader{writing-mode:vertical-lr;direction:rtl;width:32px;height:170px;margi
 .rotfb input.fader{writing-mode:horizontal-tb;direction:ltr;width:170px;height:32px;position:absolute;top:69px;left:-67px;transform:rotate(-90deg)}
 .strip .nm{font-size:11px;font-weight:700;text-align:center;line-height:1.15;min-height:2.3em;display:flex;align-items:center;overflow-wrap:anywhere}
 .ms{display:flex;flex-direction:column;gap:4px}
-.ms button{width:30px;height:24px;border-radius:5px;border:1px solid var(--line);background:var(--bg);font-size:11px;font-weight:700;padding:0;color:var(--muted)}
+.ms button{width:28px;height:22px;border-radius:2px;border:1px solid var(--line);background:var(--bg);font-size:11px;font-weight:700;padding:0;color:var(--muted)}
 .ms .m[aria-pressed="true"]{background:var(--warn);border-color:var(--warn);color:#1a0d08}
 .ms .s[aria-pressed="true"]{background:var(--hit);border-color:var(--hit);color:var(--brass-ink)}
 .strip.off .fwrap,.strip.off .lv{opacity:.4}
@@ -223,7 +237,16 @@ input.fader{writing-mode:vertical-lr;direction:rtl;width:32px;height:170px;margi
       <button class="ed-b" id="edExport">Скачать MIDI</button>
       <button class="ed-b danger" id="edClear">Очистить</button>
     </div>
-    <div class="ed-hint" id="edHint">Нажмите на клетку, чтобы поставить удар, нажмите на удар, чтобы убрать. Нажатие на название инструмента даёт его послушать.</div>
+    <div class="ed-hint" id="edHint">Нажмите на клетку, чтобы поставить удар, нажмите на удар, чтобы убрать. Нажатие на название инструмента даёт его послушать, удержание выделяет все его ноты.</div>
+    <div class="ed-sel" id="edSelBar" hidden>
+      <span>Выбрано: <b id="edSelInfo">0</b></span>
+      <label class="ed-f">Сила <input id="edSelVel" type="range" min="1" max="127" value="100"><output id="edSelVelOut">100</output></label>
+      <button class="ed-b sq" id="edSelLeft" aria-label="Сдвинуть влево на клетку">←</button>
+      <button class="ed-b sq" id="edSelRight" aria-label="Сдвинуть вправо на клетку">→</button>
+      <label class="ed-f"><select id="edSelMove"><option value="">Перенести на…</option></select></label>
+      <button class="ed-b danger" id="edSelDel">Удалить</button>
+      <button class="ed-b" id="edSelClear">Снять</button>
+    </div>
     <div class="ed-grid">
       <div class="ed-lanes" id="edLanes"></div>
       <div class="ed-scroll" id="edScroll"><div id="edSpacer"></div><canvas id="edCanvas"></canvas></div>
@@ -243,7 +266,7 @@ input.fader{writing-mode:vertical-lr;direction:rtl;width:32px;height:170px;margi
     </div>
   </div>
 
-  <footer>Играются ноты ударных по стандарту General MIDI (обычно 10-й канал). Сэмплы: FluidR3 GM, лицензия MIT. Работает без интернета. Версия 8.</footer>
+  <footer>Играются ноты ударных по стандарту General MIDI (обычно 10-й канал). Сэмплы: FluidR3 GM, лицензия MIT. Работает без интернета. Версия 9.</footer>
 </div>
 
 <script>
@@ -685,7 +708,7 @@ const setRoomPct = v => setRoom(ROOM_MIN+Math.max(0,Math.min(100,v))/100*(ROOM_M
 /* ---------- track editor: a drum-machine grid over the drum channel ---------- */
 const DRUM_NAMES = {35:'Бочка 2',36:'Бочка',37:'Римшот',38:'Малый',39:'Хлопок',40:'Малый 2',41:'Флор низ',42:'Хэт закр.',43:'Флор',44:'Хэт педаль',45:'Том низ',46:'Хэт откр.',47:'Том сред.',48:'Том 1',49:'Крэш',50:'Том выс.',51:'Райд',52:'Чайна',53:'Райд бел.',54:'Бубен',55:'Сплэш',56:'Ковбелл',57:'Крэш 2',58:'Вибраслэп',59:'Райд 2',60:'Бонго выс.',61:'Бонго низ',62:'Конга глух.',63:'Конга выс.',64:'Конга низ',65:'Тимбал выс.',66:'Тимбал низ',67:'Агого выс.',68:'Агого низ',69:'Кабаса',70:'Маракас',71:'Свисток кор.',72:'Свисток дл.',73:'Гуиро кор.',74:'Гуиро дл.',75:'Клавес',76:'Вуд-блок выс.',77:'Вуд-блок низ',78:'Куика глух.',79:'Куика откр.',80:'Треугольник глух.',81:'Треугольник'};
 const LANE_ORDER = [49,57,55,52,51,53,59,46,42,44,50,48,47,45,43,41,40,38,39,37,36,35];
-const ed = {grid:16, cell:24, row:30, ruler:22, lanes:[], undo:[], bars:4, open:false};
+const ed = {grid:16, cell:24, row:30, ruler:22, lanes:[], undo:[], bars:4, open:false, sel:new Set()};   // sel holds event objects
 const edStep = () => 60/track().bpm*4/ed.grid;              // seconds per cell
 const barSec = () => 60/track().bpm*4;
 function edEvents(){ return track().events.filter(e=>e.ch===chan && e.n>=0); }
@@ -697,7 +720,7 @@ function edLanes(){
 function openEditor(){
   initAudio(); const t=track();
   if(t.chan===undefined) t.chan=chan;
-  ed.open=true; ed.undo=[]; ed.lanes=[];
+  ed.open=true; ed.undo=[]; ed.lanes=[]; ed.sel.clear(); edSelUI(); edFullscreen(true);
   const last=edEvents().reduce((m,e)=>Math.max(m,e.t),0);
   ed.bars = t.bars || Math.max(1, Math.ceil((last+0.001)/barSec()));
   $('edName').value=t.name; $('edBpm').value=t.bpm; $('edUndo').disabled=true;
@@ -705,10 +728,11 @@ function openEditor(){
   edLanes(); $('editor').hidden=false; edSaved(!t.dirty); edLayout();
   $('edScroll').scrollLeft=Math.max(0, pos()/edStep()*ed.cell-60);
 }
-function closeEditor(){ ed.open=false; $('editor').hidden=true; renderTracks(); $('edit').focus(); }
+function closeEditor(){ edFullscreen(false); ed.sel.clear(); ed.open=false; $('editor').hidden=true; renderTracks(); $('edit').focus(); }
 function edSaved(ok){ const b=$('edSave'); b.classList.toggle('saved',ok); b.textContent=ok?'Сохранено':'Сохранить'; }
 function edLayout(){
   $('edBars').textContent=ed.bars;
+  setTimeout(edSelUI);
   $('edLanes').innerHTML='<div class="ruler"></div>'+ed.lanes.map(n=>`<button data-n="${n}">${DRUM_NAMES[n]||('Нота '+n)}</button>`).join('');
   const cols=Math.round(ed.bars*ed.grid);
   $('edSpacer').style.width=(cols*ed.cell)+'px'; $('edSpacer').style.height=(ed.ruler+ed.lanes.length*ed.row)+'px';
@@ -736,13 +760,15 @@ function edDraw(){
   for(const e of edEvents()){
     const k=e.t/st; if(k<first-1||k>lastC+1) continue; const i=lane[e.n]; if(i===undefined) continue;
     const x=k*ed.cell-x0, y=ed.ruler+i*ed.row-y0;
-    c.globalAlpha=0.35+0.65*(e.v/127); c.fillStyle=col('--brass');
-    c.beginPath(); c.roundRect ? c.roundRect(x+2,y+4,ed.cell-4,ed.row-8,4) : c.rect(x+2,y+4,ed.cell-4,ed.row-8); c.fill(); c.globalAlpha=1;
+    const on=ed.sel.has(e);
+    c.globalAlpha=0.35+0.65*(e.v/127); c.fillStyle=col(on?'--hit':'--brass');
+    c.beginPath(); c.rect(x+2,y+4,ed.cell-4,ed.row-8); c.fill(); c.globalAlpha=1;
+    if(on){ c.strokeStyle=col('--fg'); c.lineWidth=1.5; c.strokeRect(x+2.75,y+4.75,ed.cell-5.5,ed.row-9.5); }
   }
   // playhead
   const px=pos()/st*ed.cell-x0; if(px>=0&&px<=w){ c.fillStyle=col('--hit'); c.fillRect(px-1,0,2,h); }
 }
-function edCommit(){ const t=track(); t.dirty=true; t.bars=ed.bars; t.events.sort((a,b)=>a.t-b.t); list=evs(); if(playing) idx=findIdx(pos()); fitToKit(); edSaved(false); edDraw(); }
+function edCommit(){ const t=track(); ed.sel.forEach(e=>{ if(!t.events.includes(e)) ed.sel.delete(e); }); edSelUI(); t.dirty=true; t.bars=ed.bars; t.events.sort((a,b)=>a.t-b.t); list=evs(); if(playing) idx=findIdx(pos()); fitToKit(); edSaved(false); edDraw(); }
 function edPush(){ ed.undo.push(JSON.stringify(track().events)); if(ed.undo.length>50) ed.undo.shift(); $('edUndo').disabled=false; }
 $('edScroll').addEventListener('scroll',()=>{ $('edLanes').scrollTop=$('edScroll').scrollTop; edDraw(); },{passive:true});
 window.addEventListener('resize',()=>edDraw());
@@ -757,8 +783,56 @@ $('edCanvas').addEventListener('click',e=>{
   else { const v=+$('edVel').value; evAll.push({t:+t0.toFixed(5), ch:chan, n, raw:n, v}); hit(n,v,ctx.currentTime); }
   edCommit();
 });
-$('edLanes').addEventListener('click',e=>{ const b=e.target.closest('button[data-n]'); if(b){ initAudio(); ctx.resume(); hit(+b.dataset.n,+$('edVel').value,ctx.currentTime); } });
-$('edUndo').addEventListener('click',()=>{ const s0=ed.undo.pop(); if(!s0) return; const t=track(); t.events.length=0; JSON.parse(s0).forEach(e=>t.events.push(e)); $('edUndo').disabled=!ed.undo.length; edLanes(); edLayout(); edCommit(); });
+// tap a lane name to hear it; press and hold to select every note of that instrument (hold again to drop the selection)
+let laneHold=null, laneHeld=false;
+$('edLanes').addEventListener('pointerdown',e=>{
+  const b=e.target.closest('button[data-n]'); if(!b) return; laneHeld=false; clearTimeout(laneHold);
+  laneHold=setTimeout(()=>{ laneHeld=true; edSelectLane(+b.dataset.n); if(navigator.vibrate) try{ navigator.vibrate(15); }catch(_){} }, 450);
+});
+['pointerup','pointercancel','pointerleave'].forEach(t=>$('edLanes').addEventListener(t,()=>clearTimeout(laneHold)));
+$('edLanes').addEventListener('scroll',()=>clearTimeout(laneHold),{passive:true});
+$('edLanes').addEventListener('contextmenu',e=>e.preventDefault());
+$('edLanes').addEventListener('click',e=>{ const b=e.target.closest('button[data-n]'); if(!b) return; if(laneHeld){ laneHeld=false; return; } initAudio(); ctx.resume(); hit(+b.dataset.n,+$('edVel').value,ctx.currentTime); });
+function edSelectLane(n){
+  const notes=edEvents().filter(e=>e.n===n), same=notes.length && notes.length===ed.sel.size && notes.every(e=>ed.sel.has(e));
+  ed.sel=new Set(same?[]:notes); edSelUI(); edDraw();
+}
+function edSelUI(){
+  const sel=[...ed.sel], bar=$('edSelBar'); bar.hidden=!sel.length;
+  const lanesSel=new Set(sel.map(e=>e.n));
+  document.querySelectorAll('#edLanes button[data-n]').forEach(b=>b.classList.toggle('sel', lanesSel.has(+b.dataset.n)));
+  if(!sel.length) return;
+  $('edSelInfo').textContent=sel.length+' '+[...lanesSel].map(n=>DRUM_NAMES[n]||n).join(', ');
+  const avg=Math.round(sel.reduce((a,e)=>a+e.v,0)/sel.length); $('edSelVel').value=avg; $('edSelVelOut').textContent=avg;
+  if($('edSelMove').options.length<2) $('edSelMove').innerHTML='<option value="">Перенести на…</option>'+Object.entries(DRUM_NAMES).map(([n,nm])=>`<option value="${n}">${nm}</option>`).join('');
+}
+let selVelPushed=false;
+$('edSelVel').addEventListener('input',()=>{ if(!selVelPushed){ edPush(); selVelPushed=true; } const v=+$('edSelVel').value; $('edSelVelOut').textContent=v; ed.sel.forEach(e=>e.v=v); edDraw(); });
+$('edSelVel').addEventListener('change',()=>{ selVelPushed=false; edCommit(); });
+function edShiftSel(d){
+  if(!ed.sel.size) return; const st=edStep(), end=ed.bars*barSec();
+  if([...ed.sel].some(e=>e.t+d*st<-1e-6 || e.t+d*st>=end-1e-6)) return;   // stay inside the track
+  edPush(); ed.sel.forEach(e=>e.t=+(e.t+d*st).toFixed(5)); edCommit();
+}
+$('edSelLeft').addEventListener('click',()=>edShiftSel(-1));
+$('edSelRight').addEventListener('click',()=>edShiftSel(1));
+$('edSelMove').addEventListener('change',()=>{
+  const n=+$('edSelMove').value; $('edSelMove').value=''; if(!n || !ed.sel.size) return;
+  edPush(); ed.sel.forEach(e=>{ e.n=n; e.raw=n; e.cut=undefined; });
+  if(!ed.lanes.includes(n)) ed.lanes.push(n); edLanes(); edLayout(); edCommit();
+});
+$('edSelDel').addEventListener('click',()=>{ if(!ed.sel.size) return; edPush(); const t=track(); for(let j=t.events.length-1;j>=0;j--) if(ed.sel.has(t.events[j])) t.events.splice(j,1); ed.sel.clear(); edCommit(); });
+$('edSelClear').addEventListener('click',()=>{ ed.sel.clear(); edSelUI(); edDraw(); });
+// the editor takes the whole screen: browser fullscreen where allowed, immersive mode in the Android app
+function edFullscreen(on){
+  try{ if(window.AndroidBridge && AndroidBridge.setImmersive){ AndroidBridge.setImmersive(on); return; } }catch(_){}
+  try{
+    if(on && !document.fullscreenElement && document.documentElement.requestFullscreen) document.documentElement.requestFullscreen({navigationUI:'hide'}).catch(()=>{});
+    if(!on && document.fullscreenElement) document.exitFullscreen().catch(()=>{});
+  }catch(_){}
+}
+window.addEventListener('orientationchange',()=>setTimeout(edDraw,250));
+$('edUndo').addEventListener('click',()=>{ const s0=ed.undo.pop(); if(!s0) return; ed.sel.clear(); const t=track(); t.events.length=0; JSON.parse(s0).forEach(e=>t.events.push(e)); $('edUndo').disabled=!ed.undo.length; edLanes(); edLayout(); edCommit(); });
 $('edGrid').addEventListener('change',()=>{ ed.grid=+$('edGrid').value; ed.cell = ed.grid===32?18:ed.grid===8?36:24; edLayout(); });
 $('edVel').addEventListener('input',()=>{ $('edVelOut').textContent=$('edVel').value; });
 $('edBpm').addEventListener('change',()=>{

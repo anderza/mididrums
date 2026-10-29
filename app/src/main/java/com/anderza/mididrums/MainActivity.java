@@ -9,6 +9,9 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Base64;
+import android.view.View;
+import android.view.WindowInsets;
+import android.view.WindowInsetsController;
 import android.view.WindowManager;
 import android.webkit.JavascriptInterface;
 import android.webkit.ValueCallback;
@@ -113,8 +116,34 @@ public class MainActivity extends Activity {
         });
     }
 
+    /** Hides or shows the status and navigation bars (the track editor runs full screen). */
+    @SuppressWarnings("deprecation")
+    private void setImmersive(boolean on) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            getWindow().setDecorFitsSystemWindows(!on);
+            WindowInsetsController c = getWindow().getInsetsController();
+            if (c == null) return;
+            if (on) {
+                c.hide(WindowInsets.Type.systemBars());
+                c.setSystemBarsBehavior(WindowInsetsController.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE);
+            } else {
+                c.show(WindowInsets.Type.systemBars());
+            }
+        } else {
+            getWindow().getDecorView().setSystemUiVisibility(on
+                    ? View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY | View.SYSTEM_UI_FLAG_FULLSCREEN | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                    | View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                    : 0);
+        }
+    }
+
     /** Called from the page as window.AndroidBridge. */
     private class Bridge {
+        @JavascriptInterface
+        public void setImmersive(boolean on) {
+            runOnUiThread(() -> MainActivity.this.setImmersive(on));
+        }
+
         /** Writes a file the page built (base64) to the Downloads folder; true on success. */
         @JavascriptInterface
         public boolean saveFile(String name, String base64) {
