@@ -56,20 +56,22 @@ button{cursor:pointer}
 .pad.on{background:linear-gradient(var(--hit),var(--brass));border-color:var(--hit);color:var(--brass-ink);transform:scale(.95);transition:none}
 
 /* transport */
-.transport{background:var(--panel);border:1px solid var(--line);border-radius:4px;padding:12px;display:flex;flex-direction:column;gap:10px}
+.transport{background:var(--panel);border:1px solid var(--line);border-radius:4px;padding:8px 10px;display:flex;flex-direction:column;gap:7px}
 .now{display:flex;justify-content:space-between;gap:10px;align-items:baseline;min-width:0}
 .now .name{font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
 .time{font-variant-numeric:tabular-nums;color:var(--muted);font-size:13px;flex:none}
-.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.row{display:flex;gap:8px;align-items:center}
+.row .time{font-size:12px;flex:none}
+.row2{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:stretch}
+.row2 .mixbtn{width:auto;padding:5px 12px;font-size:13px}
 .play{width:44px;height:44px;border-radius:3px;border:0;background:var(--brass);color:var(--brass-ink);display:grid;place-items:center;flex:none}
 .play svg,.ctl svg{width:20px;height:20px;fill:currentColor}
 .ctl{width:36px;height:36px;border-radius:3px;border:1px solid var(--line);background:var(--panel-2);display:grid;place-items:center;flex:none}
 .ctl[aria-pressed="true"]{border-color:var(--brass);color:var(--brass)}
 input[type=range]{width:100%;accent-color:var(--brass);margin:0}
 .seek{flex:1;min-width:0}
-.sliders{display:grid;grid-template-columns:1fr 1fr;gap:12px 16px}
-.sliders .field:nth-child(3){grid-column:1/-1}
-.field{display:flex;flex-direction:column;gap:4px;min-width:0}
+.sliders{display:grid;grid-template-columns:1fr 1fr;gap:6px 16px}
+.field{display:flex;flex-direction:column;gap:2px;min-width:0}
 .field label{font-size:12px;color:var(--muted);display:flex;justify-content:space-between}
 .field label output{font-variant-numeric:tabular-nums;color:var(--fg)}
 select{background:var(--panel-2);border:1px solid var(--line);border-radius:3px;padding:6px;width:100%}
@@ -96,6 +98,8 @@ footer{font-size:12px;color:var(--muted)}
 .trk svg{width:22px;height:22px;fill:var(--fg);flex:none}
 .trackbar .ctl{width:38px;height:38px;border-radius:3px}
 .add.ghost{border-style:solid;border-color:var(--line);color:var(--fg);font-weight:600;font-size:13px;padding:8px}
+.tgroup{list-style:none;font-family:var(--display);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);padding:8px 2px 0}
+.tracks{max-height:52vh;overflow-y:auto}
 .track .unsaved{color:var(--hit);font-size:12px}
 .editor{position:fixed;inset:0;z-index:30;background:var(--bg);display:flex;flex-direction:column;gap:8px;padding-top:calc(10px + env(safe-area-inset-top,0px));padding-bottom:calc(10px + env(safe-area-inset-bottom,0px));padding-left:max(12px,env(safe-area-inset-left,0px));padding-right:max(12px,env(safe-area-inset-right,0px))}
 .ed-top{display:flex;gap:8px;align-items:center}
@@ -171,7 +175,7 @@ input.fader{writing-mode:vertical-lr;direction:rtl;width:32px;height:170px;margi
 .ms .m[aria-pressed="true"]{background:var(--warn);border-color:var(--warn);color:#1a0d08}
 .ms .s[aria-pressed="true"]{background:var(--hit);border-color:var(--hit);color:var(--brass-ink)}
 .strip.off .fwrap,.strip.off .lv{opacity:.4}
-@media (max-width:380px){.sliders{grid-template-columns:1fr}.kit b{font-size:17px}}
+@media (max-width:340px){.sliders{grid-template-columns:1fr}}
 @media (prefers-reduced-motion:reduce){.pad,.pad.on{transition:none;transform:none}}
 </style>
 
@@ -192,19 +196,22 @@ input.fader{writing-mode:vertical-lr;direction:rtl;width:32px;height:170px;margi
   </section>
 
   <section class="transport">
-    <div class="now"><span class="name" id="curName">—</span><span class="time" id="time">0:00 / 0:00</span></div>
+    <span class="name" id="curName" hidden>—</span>
     <div class="row">
       <button class="play" id="play" aria-label="Играть"><svg viewBox="0 0 24 24" id="playIcon"><path d="M8 5v14l11-7z"/></svg></button>
       <button class="ctl" id="stop" aria-label="Стоп"><svg viewBox="0 0 24 24"><path d="M7 7h10v10H7z"/></svg></button>
       <button class="ctl" id="loop" aria-label="Повтор" aria-pressed="false"><svg viewBox="0 0 24 24"><path d="M7 7h10v3l4-4-4-4v3H5v6h2V7zm10 10H7v-3l-4 4 4 4v-3h12v-6h-2v4z"/></svg></button>
       <input class="seek" id="seek" type="range" min="0" max="1000" value="0" aria-label="Позиция">
+      <span class="time" id="time">0:00 / 0:00</span>
     </div>
     <div class="sliders">
       <div class="field"><label for="tempo">Темп <output id="tempoOut">100%</output></label><input id="tempo" type="range" min="50" max="150" step="5" value="100"></div>
       <div class="field"><label for="vol">Громкость <output id="volOut">80%</output></label><input id="vol" type="range" min="0" max="100" value="80"></div>
-      <div class="field"><label for="chan">Канал ударных</label><select id="chan"></select></div>
     </div>
-    <button class="mixbtn" id="mixOpen" aria-haspopup="dialog"><svg viewBox="0 0 24 24"><path d="M5 3h2v6h2v2H7v10H5V11H3V9h2zm6 0h2v12h2v2h-2v4h-2v-4H9v-2h2zm6 0h2v4h2v2h-2v12h-2V9h-2V7h2z"/></svg>Миксер</button>
+    <div class="row2">
+      <select id="chan" aria-label="Канал ударных"></select>
+      <button class="mixbtn" id="mixOpen" aria-haspopup="dialog"><svg viewBox="0 0 24 24"><path d="M5 3h2v6h2v2H7v10H5V11H3V9h2zm6 0h2v12h2v2h-2v4h-2v-4H9v-2h2zm6 0h2v4h2v2h-2v12h-2V9h-2V7h2z"/></svg>Миксер</button>
+    </div>
     <div class="note" id="note" hidden></div>
   </section>
 
@@ -281,7 +288,7 @@ input.fader{writing-mode:vertical-lr;direction:rtl;width:32px;height:170px;margi
     </div>
   </div>
 
-  <footer>Играются ноты ударных по стандарту General MIDI (обычно 10-й канал). Сэмплы: FluidR3 GM, лицензия MIT. Работает без интернета. Версия 11.</footer>
+  <footer>Играются ноты ударных по стандарту General MIDI (обычно 10-й канал). Сэмплы: FluidR3 GM, лицензия MIT. Работает без интернета. Версия 12.</footer>
 </div>
 
 <script>
@@ -400,6 +407,70 @@ function demoTrack(){
   return {name:'Пример: рок-бит 104 BPM', events:ev, bpm, demo:true};
 }
 
+/* ---------- built-in example grooves (written for this app) ----------
+   One string per instrument, one character per step of a bar: X accent, x hit, o ghost, - rest.
+   g is steps per bar: 16 = sixteenths, 12 = eighth-note triplets. Each example is 8 bars:
+   the groove, a fill in bar 8, then a closing crash. */
+const LANE_KEY = {k:36, s:38, h:42, o:46, p:44, r:51, b:53, c:49, d:57, n:52, t:48, m:45, f:43, g:41};
+const STYLE_KIT = {metal:'modern', rock:'rock', punk:'punk'};
+const STYLE_NAME = {metal:'Метал', rock:'Рок', punk:'Панк-рок'};
+const FILLS = {
+  16: [
+    {s:'xxxx------------', t:'----xxxx--------', m:'--------xxxx----', f:'------------xxxx', k:'x---x---x---x---'},
+    {s:'x-x-x-x-xxxxXXXX', k:'x---x---x---x---'},
+    {t:'x-x-------------', m:'----x-x---------', f:'--------x-x-x-x-', s:'------------X-XX', k:'x---x---x---x---'},
+  ],
+  12: [{s:'xxx---------', t:'---xxx------', m:'------xxx---', f:'---------xxx', k:'x--x--x--x--'}],
+};
+const EXAMPLES = [
+  // metal
+  {st:'metal', n:'Даблбас шестнадцатыми', bpm:110, g:16, v:{k:'xxxxxxxxxxxxxxxx', s:'----X-------X---', r:'x---x---x---x---'}, fill:1},
+  {st:'metal', n:'Бластбит', bpm:190, g:16, v:{k:'x-x-x-x-x-x-x-x-', s:'-x-x-x-x-x-x-x-x', n:'x---x---x---x---'}, fill:1},
+  {st:'metal', n:'Галоп', bpm:150, g:16, v:{k:'x-xxx-xxx-xxx-xx', s:'----X-------X---', h:'x-x-x-x-x-x-x-x-'}, fill:0},
+  {st:'metal', n:'Трэш скан-бит', bpm:200, g:16, v:{k:'x---x---x---x---', s:'--X---X---X---X-', h:'x-x-x-x-x-x-x-x-'}, fill:0},
+  {st:'metal', n:'Халфтайм-грув', bpm:75, g:16, v:{k:'x-x---x-xx---x--', s:'--------X-------', n:'x---x---x---x---'}, fill:2},
+  {st:'metal', n:'Брейкдаун', bpm:120, g:16, v:{k:'x--x--x--x--x-x-', s:'--------X-------', c:'x---x---x---x---'}, fill:2},
+  {st:'metal', n:'Дум', bpm:62, g:16, v:{k:'x-----x-x-------', s:'----X-------X---', r:'x-x-x-x-x-x-x-x-'}, fill:0},
+  {st:'metal', n:'Д-бит', bpm:165, g:16, v:{k:'x-----x-x-------', s:'----X-------X---', d:'x-x-x-x-x-x-x-x-'}, fill:1},
+  {st:'metal', n:'Даблбас триолями', bpm:120, g:12, v:{k:'xxxxxxxxxxxx', s:'---X-----X--', r:'x--x--x--x--'}, fill:0},
+  {st:'metal', n:'Джент синкопы', bpm:110, g:16, v:{k:'x--x-x--x-x--x--', s:'----X-------X---', n:'x---x---x---x---'}, fill:2},
+  // rock
+  {st:'rock', n:'Классический рок', bpm:110, g:16, v:{k:'x-------x-x-----', s:'----X-------X---', h:'x-x-x-x-x-x-x-x-'}, fill:0},
+  {st:'rock', n:'Рок на райде', bpm:120, g:16, v:{k:'x-----x-x-------', s:'----X-------X---', r:'x-x-x-x-x-x-x-x-'}, fill:2},
+  {st:'rock', n:'Хард-рок с открытым хэтом', bpm:130, g:16, v:{k:'x-----x-x-x-----', s:'----X-------X---', h:'x-x-x-x-x-x-x---', o:'--------------x-'}, fill:0},
+  {st:'rock', n:'Фанк-рок шестнадцатыми', bpm:98, g:16, v:{k:'x--x--x---x-----', s:'----X--o----X--o', h:'XoxoXoxoXoxoXoxo'}, fill:1},
+  {st:'rock', n:'Шаффл', bpm:96, g:12, v:{k:'x-----x-----', s:'---X-----X--', h:'x-xx-xx-xx-x'}, fill:0},
+  {st:'rock', n:'Халфтайм', bpm:80, g:16, v:{k:'x-----x---x-----', s:'--------X-------', h:'x-x-x-x-x-x-x-x-'}, fill:2},
+  {st:'rock', n:'Бочка на четыре', bpm:124, g:16, v:{k:'x---x---x---x---', s:'----X-------X---', o:'--x---x---x---x-', p:'x---x---x---x---'}, fill:1},
+  {st:'rock', n:'Томовый грув', bpm:112, g:16, v:{k:'x-------x-------', s:'----X-------X---', f:'x-x-x-x-x-x-x-x-'}, fill:2},
+  {st:'rock', n:'Пауэр-баллада', bpm:68, g:16, v:{k:'x-------x-x-----', s:'----X-------X---', h:'x-x-x-x-x-x-x-x-'}, fill:0},
+  {st:'rock', n:'Стадионный', bpm:118, g:16, v:{k:'x-x-----x-x-----', s:'----X-------X---', h:'x---x---x---x---'}, fill:1},
+  // punk
+  {st:'punk', n:'Быстрые восьмые', bpm:180, g:16, v:{k:'x-------x-------', s:'----X-------X---', h:'x-x-x-x-x-x-x-x-'}, fill:1},
+  {st:'punk', n:'Скейт-панк полька', bpm:200, g:16, v:{k:'x---x---x---x---', s:'--X---X---X---X-', r:'x-x-x-x-x-x-x-x-'}, fill:1},
+  {st:'punk', n:'Поп-панк', bpm:165, g:16, v:{k:'x-----x-x-------', s:'----X-------X---', h:'X-x-X-x-X-x-X-x-'}, fill:0},
+  {st:'punk', n:'Д-бит', bpm:170, g:16, v:{k:'x-----x-x-------', s:'----X-------X---', h:'x-x-x-x-x-x-x-x-'}, fill:1},
+  {st:'punk', n:'Хардкор халфтайм', bpm:100, g:16, v:{k:'x-x---x-x-x-----', s:'--------X-------', d:'x---x---x---x---'}, fill:2},
+  {st:'punk', n:'Гаражный на флор-томе', bpm:150, g:16, v:{k:'x-------x-------', s:'----X-------X---', f:'x-x-x-x-x-x-x-x-'}, fill:2},
+  {st:'punk', n:'Панк-шаффл', bpm:140, g:12, v:{k:'x-----x-----', s:'---X-----X--', h:'x-xx-xx-xx-x'}, fill:0},
+  {st:'punk', n:'Бочка на четыре', bpm:150, g:16, v:{k:'x---x---x---x---', s:'----X-------X---', h:'x-x-x-x-x-x-x-x-'}, fill:0},
+  {st:'punk', n:'Куплет шестнадцатыми', bpm:120, g:16, v:{k:'x--x--x-x-------', s:'----X-------X---', h:'XoxoXoxoXoxoXoxo'}, fill:1},
+  {st:'punk', n:'Мелодик-панк на райде', bpm:190, g:16, v:{k:'x-x-----x-x-----', s:'----X-------X---', r:'x-x-x-x-x-x-x-x-'}, fill:0},
+];
+function makeExample(def){
+  const bar=240/def.bpm, step=bar/def.g, ev=[], vel={X:124,x:104,o:58};
+  const put=(pat,b)=>{ for(const [key,str] of Object.entries(pat)) [...str].forEach((ch,i)=>{ if(vel[ch]) ev.push({t:+(b*bar+i*step).toFixed(5), ch:9, n:LANE_KEY[key], v:vel[ch]}); }); };
+  for(let b=0;b<7;b++){
+    put(def.v,b);
+    if(b%4===0) ev.push({t:+(b*bar).toFixed(5), ch:9, n:49, v:118});                    // crash on bars 1 and 5
+    if(b%4===3 && def.g===16 && def.v.k[14]==='-') ev.push({t:+(b*bar+14*step).toFixed(5), ch:9, n:36, v:96});  // pickup kick into the next phrase
+  }
+  const fills=FILLS[def.g]; put(fills[(def.fill||0)%fills.length],7);
+  ev.push({t:+(8*bar).toFixed(5), ch:9, n:49, v:124}, {t:+(8*bar).toFixed(5), ch:9, n:36, v:124});
+  ev.forEach(e=>e.raw=e.n); ev.sort((a,b)=>a.t-b.t);
+  return {name:STYLE_NAME[def.st]+': '+def.n.toLowerCase()+' '+def.bpm+' BPM', events:ev, bpm:def.bpm, demo:true, style:def.st, def, chan:9, bars:9};
+}
+
 /* ---------- audio ---------- */
 let chans=[], buses={}, noteChan={};   // current kit's channel list, id -> close bus, note -> channel id
 let mixAll = (()=>{ try{ return JSON.parse(store.get('mix4'))||{}; }catch(e){ return {}; } })();
@@ -474,7 +545,7 @@ function hit(n,vel,when,cut){
 }
 
 /* ---------- player ---------- */
-const tracks=[demoTrack(), ...loadLibrary()]; let cur=0, chan=9;
+const tracks=[demoTrack(), ...EXAMPLES.map(makeExample), ...loadLibrary()]; let cur=0, chan=9;
 let playing=false, startCtx=0, startPos=0, speed=1, idx=0, timer=null, loop=false, flashes=[];
 const track = () => tracks[cur];
 const evs = () => track().events.filter(e=>e.ch===chan);   // n<0 = no sound for this key
@@ -521,7 +592,7 @@ async function useKit(id){
   fitToKit(); await loadKit(); applyFx();
 }
 // style words in a groove's name or folder (Toontrack, Groove Monkee and similar packs) -> preset
-const STYLE_HINTS = [[/punk/i,'punk'],[/808|trap|electro|hip.?hop|edm|techno|house/i,'electro'],[/metal|modern|djent|metalcore/i,'modern'],[/pop/i,'pop'],[/rock|grunge|indie|blues/i,'rock']];
+const STYLE_HINTS = [[/punk|панк/i,'punk'],[/808|trap|electro|hip.?hop|edm|techno|house/i,'electro'],[/metal|modern|djent|metalcore|метал/i,'modern'],[/pop|поп/i,'pop'],[/rock|grunge|indie|blues|рок/i,'rock']];
 const guessKit = text => (STYLE_HINTS.find(([re])=>re.test(text))||[])[1];
 $('kits').addEventListener('click', async e=>{
   const b=e.target.closest('.kit'); if(!b) return;
@@ -576,17 +647,23 @@ function saveLibrary(){
   try{ localStorage.setItem('tracks1',JSON.stringify(data)); return true; }catch(e){ return false; }
 }
 function renderTracks(){
-  $('tracks').innerHTML = tracks.map((t,i)=>{
+  const group = t => t.style ? 'Примеры: '+STYLE_NAME[t.style] : t.demo ? 'Пример' : 'Мои дорожки';
+  const order = ['Мои дорожки','Пример','Примеры: Метал','Примеры: Рок','Примеры: Панк-рок'];
+  const idx = tracks.map((t,i)=>i).sort((a,b)=>order.indexOf(group(tracks[a]))-order.indexOf(group(tracks[b])) || a-b);
+  let last='';
+  $('tracks').innerHTML = idx.map(i=>{ const t=tracks[i], g=group(t), head = g!==last ? `<li class="tgroup">${g}</li>` : ''; last=g; return head+trackRow(t,i); }).join('');
+  idx.forEach(i=>{ const el=$('tracks').querySelector(`.pick[data-i="${i}"] .t1`); if(el) el.textContent=tracks[i].style ? tracks[i].def.n : tracks[i].name; });
+  $('trkName').textContent=track().name+(track().dirty?' •':''); $('trkCount').textContent=tracks.length>1?(cur+1)+'/'+tracks.length:'';
+}
+function trackRow(t,i){
     if(t.chan===undefined){ const d=findDrumChannel(t); t.chan=d.ch; t.autoChan=d.auto; } const n=t.events.filter(e=>e.ch===t.chan && e.n>=0).length; const d=t.events.length?t.events[t.events.length-1].t:0;
     return `<li class="track${i===cur?' sel':''}"><button class="pick" data-i="${i}"><span class="t1"></span><span class="t2">${fmt(d)} · ${t.bpm} BPM · ${n} ударов${t.dirty?' <span class="unsaved">· не сохранено</span>':''}</span></button>${t.demo?'':`<button class="rm" data-rm="${i}" aria-label="Убрать">×</button>`}</li>`;
-  }).join('');
-  [...$('tracks').querySelectorAll('.t1')].forEach((el,i)=>el.textContent=tracks[i].name);
-  $('trkName').textContent=track().name+(track().dirty?' •':''); $('trkCount').textContent=tracks.length>1?(cur+1)+'/'+tracks.length:'';
 }
 function select(i){ stop(); cur=i; $('curName').textContent=track().name; renderChannels(); renderTracks(); render(); }
 $('tracks').addEventListener('click',e=>{
   const rm=e.target.closest('[data-rm]'); if(rm){ const i=+rm.dataset.rm; tracks.splice(i,1); saveLibrary(); select(i===cur?0:(cur>i?cur-1:cur)); return; }
-  const p=e.target.closest('.pick'); if(p){ select(+p.dataset.i); sheet('trkSheet',false); }
+  const p=e.target.closest('.pick'); if(p){ const i=+p.dataset.i, t=tracks[i]; select(i); sheet('trkSheet',false);
+    if(t.style && STYLE_KIT[t.style]!==kit.id) useKit(STYLE_KIT[t.style]).then(()=>showNote('Пресет «'+kit.name+'» под стиль примера.')); }
 });
 
 $('add').addEventListener('click',()=>{ initAudio(); $('file').click(); });
@@ -869,7 +946,11 @@ $('edClear').addEventListener('click',()=>{
 $('edName').addEventListener('input',()=>{ track().name=$('edName').value||'Без названия'; track().dirty=true; edSaved(false); $('curName').textContent=track().name; });
 $('edSave').addEventListener('click',()=>{
   let t=track();
-  if(t.demo){ const copy={...t, demo:false, name:t.name.startsWith('Пример')?'Мой бит':t.name, events:t.events.map(e=>({...e}))}; tracks.splice(cur,1,copy); tracks.unshift(demoTrack()); cur=1; t=copy; $('edName').value=t.name; }
+  if(t.demo){
+    const copy={...t, demo:false, style:undefined, def:undefined, name:t.name.startsWith('Пример')?'Мой бит':t.name, events:t.events.map(e=>({...e}))};
+    tracks[cur] = t.def ? makeExample(t.def) : demoTrack();   // the example itself stays as shipped
+    tracks.push(copy); cur=tracks.length-1; t=copy; $('edName').value=t.name;
+  }
   t.saved=true; t.dirty=false; t.bars=ed.bars;
   const ok=saveLibrary(); edSaved(ok); if(!ok){ $('edSave').textContent='Нет места'; }
   $('curName').textContent=t.name; renderTracks();
