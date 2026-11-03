@@ -23,7 +23,9 @@ body{margin:0;font-family:var(--body);font-size:15px;line-height:1.45;-webkit-ta
 header{display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap}
 h1{font-family:var(--display);font-weight:600;font-size:28px;letter-spacing:.02em;margin:0;text-transform:uppercase;text-wrap:balance}
 h1 span{color:var(--brass)}
+h1 .nm{color:inherit;text-transform:none}
 .status{font-size:12px;color:var(--muted);letter-spacing:.04em}
+.copy{font-size:10px;line-height:1.2;color:var(--muted);letter-spacing:.03em;margin-top:2px}
 h2{font-family:var(--display);font-weight:500;font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin:0 0 10px}
 section{min-width:0}
 button,select,input{font:inherit;color:inherit}
@@ -223,6 +225,7 @@ input.fader{writing-mode:vertical-lr;direction:rtl;width:32px;height:170px;margi
   .app>.about{max-height:40vh;overflow-y:auto;font-size:11px;padding:6px 8px}
   h1{font-size:18px}h1 .info{transform:scale(.8)}
   .status{font-size:10px}
+  .copy{font-size:9px;margin-top:0}
   header{gap:6px}
   .kits{gap:4px}.kit{padding:4px 2px;font-size:10.5px}
   .trackbar{gap:4px}.trk{height:28px;padding:3px 6px;font-size:12px}.trk svg{width:16px;height:16px}
@@ -256,7 +259,10 @@ input.fader{writing-mode:vertical-lr;direction:rtl;width:32px;height:170px;margi
 <body>
 <div class="app">
   <header>
-    <h1>ZaDrums<span>Midi</span> <button class="info" id="aboutInfo" aria-label="Подсказки" aria-expanded="false" aria-controls="about">i</button></h1>
+    <div class="brand">
+      <h1><span class="nm">ZaDrums<span>Midi</span></span> <button class="info" id="aboutInfo" aria-label="Подсказки" aria-expanded="false" aria-controls="about">i</button></h1>
+      <div class="copy">© Zapolski Andrei · dionys@yandex.ru</div>
+    </div>
     <div class="status" id="status">Загрузка сэмплов…</div>
   </header>
 
