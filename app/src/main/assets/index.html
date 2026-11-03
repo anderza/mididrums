@@ -276,9 +276,9 @@ input.fader{writing-mode:vertical-lr;direction:rtl;width:32px;height:170px;margi
 
   <section class="trksec">
     <div class="trackbar">
-      <button class="ctl" id="prevTrk" aria-label="Предыдущая готовая дорожка"><svg viewBox="0 0 24 24"><path d="M15.4 7.4 14 6l-6 6 6 6 1.4-1.4-4.6-4.6z"/></svg></button>
+      <button class="ctl" id="prevTrk" aria-label="Предыдущая дорожка"><svg viewBox="0 0 24 24"><path d="M15.4 7.4 14 6l-6 6 6 6 1.4-1.4-4.6-4.6z"/></svg></button>
       <button class="trk" id="trkOpen" aria-haspopup="dialog"><span class="tn" id="trkName">—</span><svg viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg></button>
-      <button class="ctl" id="nextTrk" aria-label="Следующая готовая дорожка"><svg viewBox="0 0 24 24"><path d="M8.6 16.6 10 18l6-6-6-6-1.4 1.4 4.6 4.6z"/></svg></button>
+      <button class="ctl" id="nextTrk" aria-label="Следующая дорожка"><svg viewBox="0 0 24 24"><path d="M8.6 16.6 10 18l6-6-6-6-1.4 1.4 4.6 4.6z"/></svg></button>
       <button class="ctl" id="edit" aria-label="Редактировать дорожку"><svg viewBox="0 0 24 24"><path d="M4 17.2V20h2.8l8.3-8.3-2.8-2.8zM19.7 7.3a1 1 0 0 0 0-1.4l-1.6-1.6a1 1 0 0 0-1.4 0l-1.3 1.3 2.8 2.8z"/></svg></button>
       <button class="ctl" id="add" aria-label="Добавить MIDI-дорожку"><svg viewBox="0 0 24 24"><path d="M11 5h2v6h6v2h-6v6h-2v-6H5v-2h6z"/></svg></button>
     </div>
@@ -1002,10 +1002,12 @@ $('add').addEventListener('click',()=>{ initAudio(); $('file').click(); });
 $('add2').addEventListener('click',()=>{ initAudio(); sheet('trkSheet',false); $('file').click(); });
 let trkOpened=false;   // the first time after launch every folder starts closed
 $('trkOpen').addEventListener('click',()=>{ openFolders.clear(); if(trkOpened) openFolders.add(trackFolder(track())); trkOpened=true; renderTracks(); sheet('trkSheet',true); $('trkClose').focus(); });
-// step through the ready-made tracks in the order of the folders; keeps playing if it was playing
+// step through the tracks; keeps playing if it was playing.
+// On one of the user's own tracks it stays inside "Мои дорожки"; on a ready-made one it walks the ready-made folders in order
 function stepDemo(d){
   const order=['Мои дорожки', ...Object.values(STYLE_NAME)];
-  const list=tracks.map((t,i)=>i).filter(i=>tracks[i].demo).sort((a,b)=>order.indexOf(trackFolder(tracks[a]))-order.indexOf(trackFolder(tracks[b])) || a-b);
+  const own=!track().demo;
+  const list=tracks.map((t,i)=>i).filter(i=>own ? !tracks[i].demo : tracks[i].demo).sort((a,b)=>order.indexOf(trackFolder(tracks[a]))-order.indexOf(trackFolder(tracks[b])) || a-b);
   if(!list.length) return;
   const at=list.indexOf(cur), next=at<0 ? (d>0?list[0]:list[list.length-1]) : list[(at+d+list.length)%list.length];
   const was=playing; select(next); if(was) play();
